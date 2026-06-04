@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IGG Match Center</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN with configuration -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,8 +21,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            transition: overflow 0.2s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         /* Custom scrollbars for clean layouts */
         .custom-scrollbar::-webkit-scrollbar {
@@ -25,12 +32,21 @@
             background: #f1f1f1;
             border-radius: 4px;
         }
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+        }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
         }
 
         /* Rise up entrance animations */
@@ -66,164 +82,188 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-start items-center p-2 sm:p-4 md:p-8">
+<body class="min-h-screen flex flex-col justify-start items-center p-4 sm:p-6 md:p-8 bg-gray-100 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- INTEGRATED TOP UTILITY BAR (Ensures no overlap and consistent spacing) -->
+    <div class="w-full max-w-4xl flex justify-end items-center mb-4 sm:mb-6">
+        <button onclick="toggleTheme()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 shadow-sm hover:scale-[1.02] active:scale-95 transition-all text-xs font-bold cursor-pointer" aria-label="Toggle Theme">
+            <!-- Dynamic Icon Container -->
+            <span id="theme-icon">
+                <!-- Sun Icon -->
+                <svg id="theme-sun" class="w-4 h-4 text-yellow-500 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="5" />
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+                <!-- Moon Icon -->
+                <svg id="theme-moon" class="w-4 h-4 text-gray-600 dark:text-gray-400 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+            </span>
+            <span id="theme-text">Dark Mode</span>
+        </button>
+    </div>
 
     <!-- HOME VIEW ("IGG Now" Landing Page) -->
-    <div id="homeView" class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container p-4 sm:p-8 space-y-6 sm:space-y-8">
+    <div id="homeView" class="w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden animate-rise-container p-6 sm:p-8 space-y-8">
         <!-- Logo Section -->
         <div class="flex flex-col items-center justify-center text-center space-y-3">
-            <div class="max-w-[160px] sm:max-w-[260px]">
+            <div class="max-w-[200px] sm:max-w-[260px]">
                 <img src="IGGNowLogo.png" alt="IGG Now Logo" class="max-w-full h-auto object-contain mx-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <!-- Premium Fallback Banner -->
                 <div class="hidden flex-col items-center justify-center p-3 rounded-2xl select-none">
-                    <span class="text-2xl sm:text-3xl font-black tracking-tighter text-gray-950">IGG Now</span>
+                    <span class="text-3xl font-black tracking-tighter text-gray-950 dark:text-white">IGG Now</span>
                 </div>
             </div>
-            <p class="text-xs sm:text-sm text-gray-500 font-medium max-w-md px-2">Select a match and view facts, lineups, stats and more!</p>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium max-w-md">Select a match and view facts, lineups, stats and more!</p>
         </div>
 
         <!-- Matches Header Section -->
         <div class="space-y-4">
-            <div class="border-b border-gray-100 pb-3">
+            <div class="border-b border-gray-100 dark:border-gray-800 pb-3">
                 <!-- Centered Header -->
-                <h3 class="font-extrabold text-gray-900 text-xs sm:text-base tracking-wide uppercase text-center">
+                <h3 class="font-extrabold text-gray-900 dark:text-white text-sm sm:text-base tracking-wide uppercase text-center">
                     IGG matches
                 </h3>
             </div>
             
             <!-- STACKED LIST FORMAT VIEW CONTAINER -->
-            <div id="homeListContainer" class="space-y-3 sm:space-y-4">
+            <div id="homeListContainer" class="space-y-4">
                 
-                <!-- Card 1: Friendly Match -->
-                <div onclick="showMatch('completed')" class="group relative bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-4 sm:p-5 cursor-pointer flex flex-col justify-between h-auto min-h-[110px] sm:h-36 hover:-translate-y-1 active:scale-[0.99] select-none">
+                <!-- Card 1: Club World Cup (Upcoming Match) - PLACED AT THE TOP -->
+                <div onclick="showMatch('upcoming')" class="group relative bg-gray-50/50 dark:bg-gray-800/40 hover:bg-white dark:hover:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-36 hover:-translate-y-2">
                     <!-- Scoreboard Row -->
-                    <div class="flex items-center justify-center gap-2 sm:gap-6 my-auto">
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
                         <!-- Home Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-end flex-1 text-right min-w-0">
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right min-w-0">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
                                 <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-pink-600">CFC</span>
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
                             </div>
                         </div>
                         <!-- Score box -->
-                        <div class="flex flex-col items-center shrink-0">
-                            <div class="border border-gray-200/80 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gray-50 font-black font-mono text-xs sm:text-base text-gray-900 shadow-3xs">
-                                2 - 3
-                            </div>
-                        </div>
-                        <!-- Away Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-start flex-1 text-left min-w-0">
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
-                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-blue-900">MT</span>
-                            </div>
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Bottom Info Area -->
-                    <div class="relative h-7 sm:h-9 mt-2 border-t border-gray-100/60 flex items-center">
-                        <div class="w-full flex items-center justify-between text-[10px] sm:text-[11px]">
-                            <div class="flex flex-wrap items-center gap-x-1.5 sm:gap-x-2">
-                                <span class="font-bold text-blue-600">Friendly Match</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-400 font-bold">Thur 4 June, 14:30</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-800 text-[8px] sm:text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 2: Pre-Seasonal Match -->
-                <div onclick="showMatch('preseason')" class="group relative bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-4 sm:p-5 cursor-pointer flex flex-col justify-between h-auto min-h-[120px] sm:h-40 hover:-translate-y-1 active:scale-[0.99] select-none">
-                    <!-- Scoreboard Row -->
-                    <div class="flex items-center justify-center gap-2 sm:gap-6 my-auto">
-                        <!-- Home Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-end flex-1 text-right min-w-0">
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
-                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-pink-600">CFC</span>
-                            </div>
-                        </div>
-                        <!-- Score box with Penalties below it -->
-                        <div class="flex flex-col items-center shrink-0">
-                            <div class="border border-gray-200/80 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gray-50 font-black font-mono text-xs sm:text-base text-gray-900 shadow-3xs">
-                                6 - 6
-                            </div>
-                            <span class="text-[8px] sm:text-xs text-blue-900 font-extrabold bg-blue-50 px-1.5 sm:px-2 py-0.5 rounded-full mt-1 leading-none shrink-0">(0-2 pens)</span>
-                        </div>
-                        <!-- Away Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-start flex-1 text-left min-w-0">
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
-                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-blue-900">MT</span>
-                            </div>
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Bottom Info Area -->
-                    <div class="relative h-7 sm:h-9 mt-2 border-t border-gray-100/60 flex items-center">
-                        <div class="w-full flex items-center justify-between text-[10px] sm:text-[11px]">
-                            <div class="flex flex-wrap items-center gap-x-1.5 sm:gap-x-2">
-                                <span class="font-bold text-blue-600">Pre-Seasonal Match</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-400 font-bold">Wed 26 April</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="inline-block px-2 py-0.5 bg-gray-100 text-gray-800 text-[8px] sm:text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 3: Club World Cup (Upcoming) -->
-                <div onclick="showMatch('upcoming')" class="group relative bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-4 sm:p-5 cursor-pointer flex flex-col justify-between h-36 hover:-translate-y-1 active:scale-[0.99] select-none">
-                    <!-- Scoreboard Row -->
-                    <div class="flex items-center justify-center gap-2 sm:gap-6 my-auto">
-                        <!-- Home Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-end flex-1 text-right min-w-0">
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
-                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-pink-600">CFC</span>
-                            </div>
-                        </div>
-                        <!-- Score box -->
-                        <div class="flex flex-col items-center shrink-0">
-                            <div class="border border-gray-200/80 px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-gray-50 font-black font-mono text-2xs sm:text-sm text-gray-400 shrink-0 uppercase tracking-wide">
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 dark:border-gray-700 px-4 py-1.5 rounded-xl bg-gray-50 dark:bg-gray-900 font-black font-mono text-xs sm:text-sm text-gray-400 dark:text-gray-500 shrink-0 uppercase tracking-wide">
                                 TBD
                             </div>
                         </div>
                         <!-- Away Team -->
-                        <div class="flex items-center gap-1.5 sm:gap-3 justify-start flex-1 text-left min-w-0">
-                            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left min-w-0">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
                                 <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                                <span class="hidden text-[8px] sm:text-[10px] font-black text-blue-900">MT</span>
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
                             </div>
-                            <span class="font-extrabold text-2xs xs:text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Mount Temple FC II</span>
                         </div>
                     </div>
                     
                     <!-- Bottom Info Area -->
-                    <div class="relative h-7 sm:h-9 mt-2 border-t border-gray-100/60 flex items-center">
-                        <div class="w-full flex items-center justify-between text-[10px] sm:text-[11px]">
-                            <div class="flex flex-wrap items-center gap-x-1.5 sm:gap-x-2">
-                                <span class="font-bold text-blue-600">IGG Club World Cup</span>
-                                <span class="text-gray-300">•</span>
-                                <span class="text-gray-400 font-bold">Date: TBD</span>
+                    <div class="relative h-9 mt-1 border-t border-gray-100 dark:border-gray-800 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600 dark:text-blue-400">IGG Club World Cup</span>
+                                <span class="text-gray-300 dark:text-gray-700">•</span>
+                                <span class="text-gray-400 dark:text-gray-500 font-bold">Date and time: TBD</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="inline-block px-2 py-0.5 bg-blue-50 text-blue-700 text-[8px] sm:text-[10px] font-bold rounded-full uppercase tracking-wider">Upcoming</span>
+                                <span class="inline-block px-2.5 py-0.5 bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 text-[10px] font-bold rounded-full uppercase tracking-wider">Upcoming</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Card 2: Friendly Match -->
+                <div onclick="showMatch('completed')" class="group relative bg-gray-50/50 dark:bg-gray-800/40 hover:bg-white dark:hover:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-36 hover:-translate-y-2">
+                    <!-- Scoreboard Row -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
+                        <!-- Home Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right min-w-0">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
+                            </div>
+                        </div>
+                        <!-- Score box -->
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 dark:border-gray-700 px-4 py-1.5 rounded-xl bg-gray-50 dark:bg-gray-900 font-black font-mono text-sm sm:text-base text-gray-900 dark:text-white shrink-0 shadow-3xs">
+                                2 - 3
+                            </div>
+                        </div>
+                        <!-- Away Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left min-w-0">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
+                            </div>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Mount Temple FC II</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Info Area -->
+                    <div class="relative h-9 mt-1 border-t border-gray-100 dark:border-gray-800 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600 dark:text-blue-400">Friendly Match</span>
+                                <span class="text-gray-300 dark:text-gray-700">•</span>
+                                <span class="text-gray-400 dark:text-gray-500 font-bold">Thur 4 June, 14:30</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-2.5 py-0.5 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Pre-Seasonal Match -->
+                <div onclick="showMatch('preseason')" class="group relative bg-gray-50/50 dark:bg-gray-800/40 hover:bg-white dark:hover:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-40 hover:-translate-y-2">
+                    <!-- Scoreboard Row -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
+                        <!-- Home Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right min-w-0">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
+                            </div>
+                        </div>
+                        <!-- Score box with Penalties below it -->
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 dark:border-gray-700 px-4 py-1.5 rounded-xl bg-gray-50 dark:bg-gray-900 font-black font-mono text-sm sm:text-base text-gray-900 dark:text-white shrink-0 shadow-3xs">
+                                6 - 6
+                            </div>
+                            <span class="text-[9px] sm:text-xs text-blue-900 dark:text-blue-300 font-extrabold bg-blue-50 dark:bg-blue-950/80 px-2 py-0.5 rounded-full mt-1 leading-none shrink-0">(0-2 pens)</span>
+                        </div>
+                        <!-- Away Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left min-w-0">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
+                            </div>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 dark:text-white truncate">Mount Temple FC II</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Info Area -->
+                    <div class="relative h-9 mt-1 border-t border-gray-100 dark:border-gray-800 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600 dark:text-blue-400">Pre-Seasonal Match</span>
+                                <span class="text-gray-300 dark:text-gray-700">•</span>
+                                <span class="text-gray-400 dark:text-gray-500 font-bold">Wed 26 April</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-2.5 py-0.5 bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FOOTER TEXT (No border, dark gray) -->
+            <div class="text-center text-xs sm:text-sm font-semibold text-gray-400 dark:text-gray-500 pt-2 select-none">
+                More matches coming soon :)
             </div>
 
         </div>
@@ -231,12 +271,12 @@
 
 
     <!-- MATCH CONTAINER VIEW (Friendly, Preseason, and Cup Match Details) -->
-    <div id="matchDetailsView" class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container relative hidden">
+    <div id="matchDetailsView" class="w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden animate-rise-container relative hidden">
         
         <!-- TOP NAVIGATION BAR -->
-        <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between border-b border-gray-100 animate-rise-header relative">
+        <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between border-b border-gray-100 dark:border-gray-800 animate-rise-header relative">
             <!-- Back Button to Home -->
-            <button id="backToFriendlyBtn" onclick="showMatch('home')" class="absolute left-4 sm:left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs transition duration-200">
+            <button id="backToFriendlyBtn" onclick="showMatch('home')" class="absolute left-4 sm:left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-semibold text-xs transition duration-200">
                 <span>←</span>
                 <span>IGG Now</span>
             </button>
@@ -247,8 +287,8 @@
             </div>
         </div>
 
-        <!-- MATCH METADATA ROW (Reinstated per Reversion Template) -->
-        <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-gray-50/50 border-b border-gray-100 flex flex-wrap justify-center gap-y-1.5 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs text-gray-400 font-semibold animate-rise-header">
+        <!-- MATCH METADATA ROW -->
+        <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-gray-50/50 dark:bg-gray-800/40 border-b border-gray-100 dark:border-gray-800 flex flex-wrap justify-center gap-y-1.5 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 font-semibold animate-rise-header">
             <span class="flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
@@ -274,24 +314,24 @@
                 
                 <!-- Home Team (Clonturk FC II) -->
                 <div class="flex-1 flex flex-col md:flex-row items-center justify-end text-right gap-2 sm:gap-3 md:gap-4">
-                    <h2 class="font-extrabold text-gray-900 text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight order-2 md:order-1 text-center md:text-right leading-tight">
+                    <h2 class="font-extrabold text-gray-900 dark:text-white text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight order-2 md:order-1 text-center md:text-right leading-tight">
                         Clonturk FC II
                     </h2>
                     <!-- Clonturk Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 order-1 md:order-2 flex items-center justify-center">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-pink-50 border border-pink-100">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-pink-50 border border-pink-100 dark:border-pink-900/60 dark:bg-pink-950/40">
                             <img src="Clonturk.png" alt="Clonturk FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                            <span class="hidden text-pink-600 font-extrabold text-xs sm:text-sm md:text-base">CFC</span>
+                            <span class="hidden text-pink-600 dark:text-pink-400 font-extrabold text-xs sm:text-sm md:text-base">CFC</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Match Score Indicator -->
                 <div class="flex flex-col items-center justify-center shrink-0 min-w-[75px] sm:min-w-[110px] md:min-w-[170px] text-center">
-                    <span id="matchStatusLabel" class="text-black text-[10px] sm:text-xs font-bold mb-1 sm:mb-2 uppercase tracking-wider">
+                    <span id="matchStatusLabel" class="text-black dark:text-white text-[10px] sm:text-xs font-bold mb-1 sm:mb-2 uppercase tracking-wider">
                         Full Time
                     </span>
-                    <div id="matchScoreDisplay" class="text-xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 tracking-wider font-mono leading-none">
+                    <div id="matchScoreDisplay" class="text-xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-wider font-mono leading-none">
                         2 - 3
                     </div>
                     <!-- Preseason Penalties Summary Tag -->
@@ -304,12 +344,12 @@
                 <div class="flex-1 flex flex-col md:flex-row items-center justify-start text-left gap-2 sm:gap-3 md:gap-4">
                     <!-- Mount Temple Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
-                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-blue-50 border border-blue-100">
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-blue-50 border border-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40">
                             <img src="MountTemple.png" alt="Mount Temple FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                            <span class="hidden text-blue-900 font-extrabold text-xs sm:text-sm md:text-base">MT</span>
+                            <span class="hidden text-blue-900 dark:text-blue-400 font-extrabold text-xs sm:text-sm md:text-base">MT</span>
                         </div>
                     </div>
-                    <h2 class="font-extrabold text-gray-900 text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight text-center md:text-left leading-tight">
+                    <h2 class="font-extrabold text-gray-900 dark:text-white text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight text-center md:text-left leading-tight">
                         Mount Temple FC II
                     </h2>
                 </div>
@@ -317,18 +357,18 @@
             </div>
 
             <!-- SCORERS DETAIL GRID -->
-            <div id="scorersGrid" class="w-full grid grid-cols-11 items-start mt-6 text-xs md:text-sm text-gray-600 border-t border-gray-200 pt-6">
+            <div id="scorersGrid" class="w-full grid grid-cols-11 items-start mt-6 text-xs md:text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 pt-6">
                 <!-- Clonturk Scorers Container -->
                 <div id="clonturkScorersList" class="col-span-5 text-right space-y-1">
-                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
-                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200">Liam <span class="text-gray-400 dark:text-gray-500 font-normal">3'</span></p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200">Liam <span class="text-gray-400 dark:text-gray-500 font-normal">5'</span></p>
                 </div>
                 
                 <!-- Center Icon (footballoutline.svg) -->
                 <div class="col-span-1 flex justify-center items-center py-1">
-                    <img src="footballoutline.svg" alt="Football" class="w-4 h-4 object-contain opacity-50" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <img src="footballoutline.svg" alt="Football" class="w-4 h-4 object-contain opacity-50 dark:opacity-40 filter dark:invert" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <!-- Graceful Vector Fallback if image isn't available -->
-                    <svg class="hidden w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="hidden w-4 h-4 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M12 8l3 2.2v3.6L12 16l-3-2.2v-3.6z" />
                     </svg>
@@ -336,48 +376,48 @@
 
                 <!-- Mount Temple Scorers Container -->
                 <div id="mountTempleScorersList" class="col-span-5 text-left space-y-1">
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'2</span> Joshua</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'4</span> Joshua</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'7</span> Joshua</p>
                 </div>
             </div>
 
             <!-- PRESEASON PENALTY SHOOTOUT DETAIL SECTION -->
-            <div id="preseasonPenaltiesSection" class="w-full mt-6 border-t border-gray-200 pt-6 hidden animate-rise-content">
+            <div id="preseasonPenaltiesSection" class="w-full mt-6 border-t border-gray-200 dark:border-gray-800 pt-6 hidden animate-rise-content">
                 <div class="text-center mb-4">
-                    <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Penalty Shootout (0 - 2)</span>
+                    <span class="text-[10px] uppercase font-bold text-gray-400 dark:text-gray-500 tracking-wider">Penalty Shootout (0 - 2)</span>
                 </div>
                 
-                <div class="grid grid-cols-11 items-start text-xs md:text-sm text-gray-600">
+                <div class="grid grid-cols-11 items-start text-xs md:text-sm text-gray-600 dark:text-gray-400">
                     
                     <div id="clonturkPensList" class="col-span-5 text-right space-y-3">
                         <div class="flex items-center justify-end gap-1.5">
-                            <span class="text-gray-500 font-medium">Dima</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Dima</span>
                             <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
                         <div class="flex items-center justify-end gap-1.5">
-                            <span class="text-gray-500 font-medium">Liam</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Liam</span>
                             <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
                         <div class="flex items-center justify-end gap-1.5">
-                            <span class="text-gray-500 font-medium">Liam</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Liam</span>
                             <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
                         <div class="flex items-center justify-end gap-1.5">
-                            <span class="text-gray-500 font-medium">Dima</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-medium">Dima</span>
                             <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </div>
                     </div>
 
-                    <div class="col-span-1 flex justify-center text-gray-200 py-1 font-bold text-2xs select-none">
+                    <div class="col-span-1 flex justify-center text-gray-200 dark:text-gray-700 py-1 font-bold text-2xs select-none">
                         VS
                     </div>
 
@@ -386,19 +426,19 @@
                             <svg class="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
-                            <span class="text-gray-900 font-semibold">Patrick</span>
+                            <span class="text-gray-900 dark:text-white font-semibold">Patrick</span>
                         </div>
                         <div class="flex items-center justify-start gap-1.5">
                             <svg class="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
-                            <span class="text-gray-900 font-semibold">Joshua</span>
+                            <span class="text-gray-900 dark:text-white font-semibold">Joshua</span>
                         </div>
                         <div class="flex items-center justify-start gap-1.5">
                             <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            <span class="text-gray-900 font-semibold">Eanna</span>
+                            <span class="text-gray-900 dark:text-white font-semibold">Eanna</span>
                         </div>
                     </div>
 
@@ -408,103 +448,103 @@
         </div>
 
         <!-- TABS BAR -->
-        <div class="border-b border-gray-200 overflow-x-auto custom-scrollbar animate-rise-tabs">
+        <div class="border-b border-gray-200 dark:border-gray-800 overflow-x-auto custom-scrollbar animate-rise-tabs">
             <nav class="flex justify-between md:justify-around px-2 sm:px-4 min-w-[450px]" aria-label="Tabs">
-                <button onclick="switchTab('facts')" id="tab-facts" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black transition-all duration-200">
+                <button onclick="switchTab('facts')" id="tab-facts" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black dark:text-white transition-all duration-200">
                     Facts
                 </button>
-                <button onclick="switchTab('lineup')" id="tab-lineup" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
+                <button onclick="switchTab('lineup')" id="tab-lineup" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-200 transition-all duration-200">
                     Lineup
                 </button>
-                <button onclick="switchTab('knockout')" id="tab-knockout" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
+                <button onclick="switchTab('knockout')" id="tab-knockout" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-200 transition-all duration-200">
                     Knockout
                 </button>
-                <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
+                <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-200 transition-all duration-200">
                     Stats
                 </button>
-                <button onclick="switchTab('headtohead')" id="tab-headtohead" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
+                <button onclick="switchTab('headtohead')" id="tab-headtohead" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:hover:text-gray-200 transition-all duration-200">
                     Head-to-Head
                 </button>
             </nav>
         </div>
 
         <!-- TAB CONTENT AREA -->
-        <div class="p-4 sm:p-6 md:p-8 bg-gray-50/30 animate-rise-content">
+        <div class="p-4 sm:p-6 md:p-8 bg-gray-50/30 dark:bg-gray-900/10 animate-rise-content">
 
             <!-- FACTS TAB -->
             <div id="content-facts" class="tab-content block space-y-4 sm:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm space-y-4">
-                        <h3 class="font-bold text-gray-800 text-sm md:text-base">Match Information</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700/80 shadow-sm space-y-4">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm md:text-base">Match Information</h3>
                         <div class="space-y-3 text-xs sm:text-sm">
                             
                             <!-- Location Row -->
-                            <div id="locationHoverRow" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
+                            <div id="locationHoverRow" class="group relative flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-700/50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
                                 <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
-                                    <span class="text-gray-500 flex items-center gap-1.5">
+                                    <span class="text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                                         Location
                                         <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
-                                        <span class="text-[10px] text-gray-400 font-normal">Click to learn more</span>
+                                        <span class="text-[10px] text-gray-400 dark:text-gray-500 font-normal">Click to learn more</span>
                                     </span>
-                                    <span id="factLocationText" class="font-medium text-gray-800 text-right text-xs sm:text-sm">DCU Soccer Centre, Whitehall, Dublin</span>
+                                    <span id="factLocationText" class="font-medium text-gray-800 dark:text-gray-200 text-right text-xs sm:text-sm">DCU Soccer Centre, Whitehall, Dublin</span>
                                 </div>
                                 <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
-                                    <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
+                                    <span class="text-blue-700 dark:text-blue-300 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
                                         Learn More ➔
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Match Ball Row -->
-                            <div onclick="openBallModal()" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
+                            <div onclick="openBallModal()" class="group relative flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-700/50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
                                 <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
-                                    <span class="text-gray-500 flex items-center gap-1.5">
+                                    <span class="text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
                                         Match Ball
                                         <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                         </svg>
-                                        <span class="text-[10px] text-gray-400 font-normal">Click to learn more</span>
+                                        <span class="text-[10px] text-gray-400 dark:text-gray-500 font-normal">Click to learn more</span>
                                     </span>
-                                    <span id="factBallText" class="font-medium text-gray-800 text-right pl-2 text-xs sm:text-sm">Size 5 White Sondico Meteor Football</span>
+                                    <span id="factBallText" class="font-medium text-gray-800 dark:text-gray-200 text-right pl-2 text-xs sm:text-sm">Size 5 White Sondico Meteor Football</span>
                                 </div>
-                                <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
-                                    <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
+                                <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 dark:bg-blue-950/80 rounded-xl">
+                                    <span class="text-blue-700 dark:text-blue-300 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
                                         Learn More ➔
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Surface Row -->
-                            <div class="flex justify-between py-1.5 border-b border-gray-50">
-                                <span class="text-gray-500">Surface</span>
-                                <span id="surfaceText" class="font-medium text-gray-800">Astro</span>
+                            <div class="flex justify-between py-1.5 border-b border-gray-50 dark:border-gray-700/50">
+                                <span class="text-gray-500 dark:text-gray-400">Surface</span>
+                                <span id="surfaceText" class="font-medium text-gray-800 dark:text-gray-200">Astro</span>
                             </div>
 
                             <!-- Weather Condition Row -->
-                            <div class="flex justify-between py-1.5 border-b border-gray-50">
-                                <span class="text-gray-500">Weather Condition</span>
-                                <span id="weatherDisplay" class="font-medium text-gray-800">Rainy, 14°C</span>
+                            <div class="flex justify-between py-1.5 border-b border-gray-50 dark:border-gray-700/50">
+                                <span class="text-gray-500 dark:text-gray-400">Weather Condition</span>
+                                <span id="weatherDisplay" class="font-medium text-gray-800 dark:text-gray-200">Rainy, 14°C</span>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm space-y-4">
-                        <h3 class="font-bold text-gray-800 text-sm md:text-base">Match Win Probabilities</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700/80 shadow-sm space-y-4">
+                        <h3 class="font-bold text-gray-800 dark:text-white text-sm md:text-base">Match Win Probabilities</h3>
                         <div class="space-y-3 text-xs sm:text-sm">
                             <div class="flex items-center justify-between mb-1">
-                                <span class="font-bold text-[#FF69B4]">Clonturk Win</span>
-                                <span class="font-bold text-[#001C48]">Mount Temple Win</span>
+                                <span class="font-bold text-[#FF69B4] dark:text-pink-400">Clonturk Win</span>
+                                <span class="font-bold text-[#001C48] dark:text-blue-300">Mount Temple Win</span>
                             </div>
-                            <div class="w-full bg-gray-100 rounded-full h-3.5 overflow-hidden flex">
+                            <div class="w-full bg-gray-100 dark:bg-gray-900 rounded-full h-3.5 overflow-hidden flex">
                                 <div id="clonturkProbBar" class="bg-[#FF69B4] h-full" style="width: 45%"></div>
-                                <div id="drawProbBar" class="bg-gray-300 h-full" style="width: 10%"></div>
-                                <div id="mountTempleProbBar" class="bg-[#001C48] h-full ml-auto" style="width: 45%"></div>
+                                <div id="drawProbBar" class="bg-gray-300 dark:bg-gray-700 h-full" style="width: 10%"></div>
+                                <div id="mountTempleProbBar" class="bg-[#001C48] dark:bg-blue-600 h-full ml-auto" style="width: 45%"></div>
                             </div>
-                            <div class="flex justify-between text-xs text-gray-500">
+                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400">
                                 <span id="clonturkProbText">Clonturk: 45%</span>
                                 <span id="drawProbText">Draw: 10%</span>
                                 <span id="mountTempleProbText">Mount Temple: 45%</span>
@@ -516,15 +556,15 @@
 
             <!-- LINEUP TAB -->
             <div id="content-lineup" class="tab-content hidden space-y-4 sm:space-y-6">
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex flex-col items-center">
-                    <h3 class="font-bold text-gray-800 text-sm md:text-base mb-4 self-start">Team Lineups</h3>
-                    <div class="w-full max-w-lg flex items-center justify-center border border-gray-100 rounded-xl overflow-hidden bg-gray-50 p-2 sm:p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col items-center">
+                    <h3 class="font-bold text-gray-800 dark:text-white text-sm md:text-base mb-4 self-start">Team Lineups</h3>
+                    <div class="w-full max-w-lg flex items-center justify-center border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-900 p-2 sm:p-4">
                         <img id="lineupImage" src="Lineup.png" alt="Lineup" class="max-w-full h-auto rounded-lg shadow-sm animate-rise-content" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="hidden text-center p-6 sm:p-8 text-gray-500 animate-pulse">
-                            <svg class="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <div class="hidden text-center p-6 sm:p-8 text-gray-500 dark:text-gray-400 animate-pulse">
+                            <svg class="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <p id="lineupPlaceholderText" class="text-xs sm:text-sm font-semibold text-gray-700">Lineups will be posted soon.</p>
+                            <p id="lineupPlaceholderText" class="text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">Lineups will be posted soon.</p>
                         </div>
                     </div>
                 </div>
@@ -532,12 +572,12 @@
 
             <!-- KNOCKOUT TAB -->
             <div id="content-knockout" class="tab-content hidden space-y-4 sm:space-y-6">
-                <div class="bg-white rounded-2xl p-6 sm:p-10 border border-gray-100 shadow-sm space-y-4 text-center py-8 sm:py-12">
-                    <h3 id="knockoutMatchTitle" class="font-extrabold text-gray-800 text-base sm:text-lg md:text-xl">Clonturk vs Mount Temple</h3>
-                    <div id="knockoutBadge" class="inline-block px-4 py-1.5 bg-blue-50 text-blue-700 text-2xs sm:text-xs font-bold rounded-full tracking-wider uppercase mb-2">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-10 border border-gray-100 dark:border-gray-700 shadow-sm space-y-4 text-center py-8 sm:py-12">
+                    <h3 id="knockoutMatchTitle" class="font-extrabold text-gray-800 dark:text-white text-base sm:text-lg md:text-xl">Clonturk vs Mount Temple</h3>
+                    <div id="knockoutBadge" class="inline-block px-4 py-1.5 bg-blue-50 dark:bg-blue-950/80 text-blue-700 dark:text-blue-300 text-2xs sm:text-xs font-bold rounded-full tracking-wider uppercase mb-2">
                         Upcoming Match
                     </div>
-                    <p id="knockoutDescription" class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                    <p id="knockoutDescription" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
                         Date and Time will be decided soon. This match will be the real IGG Club World Cup.
                     </p>
                 </div>
@@ -545,54 +585,54 @@
 
             <!-- STATS TAB -->
             <div id="content-stats" class="tab-content hidden space-y-4">
-                <div id="statsMainContainer" class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm space-y-5">
-                    <h3 id="statsMainTitle" class="font-bold text-gray-800 text-sm md:text-base mb-4">Match Statistics</h3>
+                <div id="statsMainContainer" class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 shadow-sm space-y-5">
+                    <h3 id="statsMainTitle" class="font-bold text-gray-800 dark:text-white text-sm md:text-base mb-4">Match Statistics</h3>
                     
                     <div class="space-y-1">
                         <div class="flex justify-between text-xs md:text-sm">
-                            <span id="clonturkPossessionVal" class="font-bold text-gray-800">30%</span>
-                            <span class="text-gray-500 font-semibold">Possession</span>
-                            <span id="mountTemplePossessionVal" class="font-bold text-gray-800">70%</span>
+                            <span id="clonturkPossessionVal" class="font-bold text-gray-800 dark:text-pink-400">30%</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-semibold">Possession</span>
+                            <span id="mountTemplePossessionVal" class="font-bold text-gray-800 dark:text-blue-300">70%</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
                             <div id="clonturkPossessionBar" class="bg-[#FF69B4] h-full" style="width: 30%"></div>
-                            <div id="mountTemplePossessionBar" class="bg-[#001C48] h-full ml-auto" style="width: 70%"></div>
+                            <div id="mountTemplePossessionBar" class="bg-[#001C48] dark:bg-blue-600 h-full ml-auto" style="width: 70%"></div>
                         </div>
                     </div>
 
                     <div class="space-y-1">
                         <div class="flex justify-between text-xs md:text-sm">
-                            <span id="clonturkShotsVal" class="font-bold text-gray-800">4</span>
-                            <span class="text-gray-500 font-semibold">Shots</span>
-                            <span id="mountTempleShotsVal" class="font-bold text-gray-800">6</span>
+                            <span id="clonturkShotsVal" class="font-bold text-gray-800 dark:text-pink-400">4</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-semibold">Shots</span>
+                            <span id="mountTempleShotsVal" class="font-bold text-gray-800 dark:text-blue-300">6</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
                             <div id="clonturkShotsBar" class="bg-[#FF69B4] h-full" style="width: 40%"></div>
-                            <div id="mountTempleShotsBar" class="bg-[#001C48] h-full ml-auto" style="width: 60%"></div>
+                            <div id="mountTempleShotsBar" class="bg-[#001C48] dark:bg-blue-600 h-full ml-auto" style="width: 60%"></div>
                         </div>
                     </div>
 
                     <div class="space-y-1">
                         <div class="flex justify-between text-[11px] sm:text-sm">
-                            <span id="clonturkOnTargetVal" class="font-bold text-gray-800">2</span>
-                            <span class="text-gray-500 font-semibold">Shots on Target</span>
-                            <span id="mountTempleOnTargetVal" class="font-bold text-gray-800">5</span>
+                            <span id="clonturkOnTargetVal" class="font-bold text-gray-800 dark:text-pink-400">2</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-semibold">Shots on Target</span>
+                            <span id="mountTempleOnTargetVal" class="font-bold text-gray-800 dark:text-blue-300">5</span>
                         </div>
                         <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
                             <div id="clonturkOnTargetBar" class="bg-[#FF69B4] h-full" style="width: 28%"></div>
-                            <div id="mountTempleOnTargetBar" class="bg-[#001C48] h-full ml-auto" style="width: 72%"></div>
+                            <div id="mountTempleOnTargetBar" class="bg-[#001C48] dark:bg-blue-600 h-full ml-auto" style="width: 72%"></div>
                         </div>
                     </div>
                 </div>
 
-                <div id="statsUnavailableContainer" class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm text-center py-10 sm:py-12 space-y-3 hidden">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-400">
+                <div id="statsUnavailableContainer" class="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 border border-gray-100 dark:border-gray-700 shadow-sm text-center py-10 sm:py-12 space-y-3 hidden">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 dark:bg-gray-900 rounded-full flex items-center justify-center mx-auto text-gray-400 dark:text-gray-600">
                         <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </div>
-                    <h3 class="font-bold text-gray-800 text-sm sm:text-base md:text-lg">Stats Unavailable</h3>
-                    <p class="text-2xs sm:text-xs md:text-sm text-gray-500 max-w-xs mx-auto">
+                    <h3 class="font-bold text-gray-800 dark:text-white text-sm sm:text-base md:text-lg">Stats Unavailable</h3>
+                    <p class="text-2xs sm:text-xs md:text-sm text-gray-500 dark:text-gray-400 max-w-xs mx-auto">
                         Stats will be available after the match.
                     </p>
                 </div>
@@ -600,12 +640,12 @@
 
             <!-- HEAD-TO-HEAD TAB -->
             <div id="content-headtohead" class="tab-content hidden space-y-4 sm:space-y-6">
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex items-center justify-around animate-rise-content">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 shadow-sm flex items-center justify-around animate-rise-content">
                     
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 overflow-hidden">
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
                             <img src="Clonturk.png" alt="Clonturk" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                            <div class="hidden text-pink-600 font-bold text-xs sm:text-sm">CFC</div>
+                            <div class="hidden text-pink-600 dark:text-pink-400 font-bold text-xs sm:text-sm">CFC</div>
                         </div>
                     </div>
 
@@ -613,62 +653,62 @@
                         <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#FF69B4] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
                             0
                         </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 dark:text-gray-200 tracking-wide uppercase">Wins</span>
                     </div>
 
                     <div class="flex flex-col items-center gap-1 sm:gap-2">
-                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-white border border-gray-100 text-gray-900 font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
+                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 text-gray-900 dark:text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
                             0
                         </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 tracking-wide uppercase">Draws</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 dark:text-gray-500 tracking-wide uppercase">Draws</span>
                     </div>
 
                     <div class="flex flex-col items-center gap-1 sm:gap-2">
-                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#001C48] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
+                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#001C48] dark:bg-blue-600 text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
                             2
                         </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 dark:text-gray-200 tracking-wide uppercase">Wins</span>
                     </div>
 
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 overflow-hidden">
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-900 overflow-hidden">
                             <img src="MountTemple.png" alt="Mount Temple" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
-                            <div class="hidden text-blue-900 font-bold text-xs sm:text-sm">MT</div>
+                            <div class="hidden text-blue-900 dark:text-blue-400 font-bold text-xs sm:text-sm">MT</div>
                         </div>
                     </div>
 
                 </div>
 
                 <!-- Previous Matches History -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm animate-rise-content">
-                    <h3 class="font-bold text-gray-800 text-sm md:text-base mb-4 flex items-center gap-2">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-4 sm:p-6 border border-gray-100 dark:border-gray-700 shadow-sm animate-rise-content">
+                    <h3 class="font-bold text-gray-800 dark:text-white text-sm md:text-base mb-4 flex items-center gap-2">
                         Previous Encounters
                     </h3>
                     <div class="space-y-3">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm border-b border-gray-50 pb-2.5 gap-2">
-                            <span class="text-gray-400 font-medium">4 Jun 2026</span>
-                            <span class="font-medium text-gray-700">
-                                Clonturk FC II <span class="font-bold text-gray-900">2 - 3</span> Mount Temple FC II
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm border-b border-gray-50 dark:border-gray-700/50 pb-2.5 gap-2">
+                            <span class="text-gray-400 dark:text-gray-500 font-medium">4 Jun 2026</span>
+                            <span class="font-medium text-gray-700 dark:text-gray-200">
+                                Clonturk FC II <span class="font-bold text-gray-900 dark:text-white">2 - 3</span> Mount Temple FC II
                             </span>
-                            <span class="text-[#001C48] bg-blue-50 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
+                            <span class="text-[#001C48] dark:text-blue-300 bg-blue-50 dark:bg-blue-950/85 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
                                 Friendly Match
                             </span>
                         </div>
 
                         <!-- Interactive 6-6 Pre-season row -->
-                        <div onclick="showMatch('preseason')" class="group relative flex justify-between items-center py-2.5 border-b border-gray-50 overflow-hidden cursor-pointer h-12 transition-all duration-300">
+                        <div onclick="showMatch('preseason')" class="group relative flex justify-between items-center py-2.5 border-b border-gray-50 dark:border-gray-700/50 overflow-hidden cursor-pointer h-12 transition-all duration-300">
                             <div class="w-full flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm gap-2 transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
-                                <span class="text-gray-400 font-medium">26 Apr 2026</span>
-                                <span class="font-medium text-gray-700">
-                                    Clonturk FC II <span class="font-bold text-gray-900">6 - 6</span> Mount Temple FC II 
-                                    <span class="text-xs text-blue-900 font-semibold block sm:inline sm:ml-1">(0 - 2 on penalties)</span>
+                                <span class="text-gray-400 dark:text-gray-500 font-medium">26 Apr 2026</span>
+                                <span class="font-medium text-gray-700 dark:text-gray-200">
+                                    Clonturk FC II <span class="font-bold text-gray-900 dark:text-white">6 - 6</span> Mount Temple FC II 
+                                    <span class="text-xs text-blue-900 dark:text-blue-400 font-semibold block sm:inline sm:ml-1">(0 - 2 on penalties)</span>
                                 </span>
                                 <span class="text-blue-900 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
                                     Pre-Seasonal Match
                                 </span>
                             </div>
-                            <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
-                                <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 font-bold">
+                            <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 dark:bg-blue-950/85 rounded-xl">
+                                <span class="text-blue-700 dark:text-blue-300 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 font-bold">
                                     View Match
                                 </span>
                             </div>
@@ -686,7 +726,7 @@
     <div id="ballModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="ballModalContent" class="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transform -translate-y-24 scale-95 opacity-0 transition-all duration-300 relative p-6 space-y-5">
             
-            <button onclick="closeBallModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-50 p-1.5 rounded-full">
+            <button onclick="closeBallModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors bg-gray-50 dark:bg-gray-900 p-1.5 rounded-full">
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -694,15 +734,15 @@
 
             <div class="text-center">
                 <h3 id="modalBallTitle" class="font-extrabold text-xl text-gray-900 tracking-tight">Sondico Meteor</h3>
-                <p class="text-xs text-gray-500 font-medium">Official Match Ball Information</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Official Match Ball Information</p>
             </div>
 
-            <div class="w-40 h-40 mx-auto flex items-center justify-center bg-gray-50/50 rounded-2xl border border-gray-100 p-3">
+            <div class="w-40 h-40 mx-auto flex items-center justify-center bg-gray-50/50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 p-3">
                 <img id="modalBallImage" src="SondicoMeteorSize5.AVIF" alt="Match Ball" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 <!-- Backup customized football vector graphic if image doesn't load -->
                 <div class="hidden flex-col items-center justify-center text-gray-300">
-                    <img src="footballoutline.svg" alt="Football" class="w-16 h-16 object-contain opacity-50" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div class="hidden flex-col items-center justify-center text-gray-400 animate-pulse">
+                    <img src="footballoutline.svg" alt="Football" class="w-16 h-16 object-contain opacity-50 dark:opacity-40 filter dark:invert" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="hidden flex-col items-center justify-center text-gray-400 dark:text-gray-500 animate-pulse">
                         <svg class="w-16 h-16 text-gray-400 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <path d="M12 8l3 2.2v3.6L12 16l-3-2.2v-3.6z" />
@@ -712,39 +752,39 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2 bg-gray-50 rounded-2xl p-4 text-center">
-                <div class="flex flex-col border-b border-r border-gray-200/60 pb-2 pr-2">
-                    <span class="text-[10px] text-gray-400 font-bold uppercase">Company</span>
-                    <span class="text-sm font-extrabold text-gray-800 mt-0.5">Sondico</span>
+            <div class="grid grid-cols-2 gap-2 bg-gray-50 dark:bg-gray-900 rounded-2xl p-4 text-center">
+                <div class="flex flex-col border-b border-r border-gray-200/60 dark:border-gray-700/60 pb-2 pr-2">
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Company</span>
+                    <span class="text-sm font-extrabold text-gray-800 dark:text-gray-200 mt-0.5">Sondico</span>
                 </div>
-                <div class="flex flex-col border-b border-gray-200/60 pb-2 pl-2">
-                    <span class="text-[10px] text-gray-400 font-bold uppercase">Model</span>
-                    <span id="modalBallModel" class="text-sm font-extrabold text-gray-800 mt-0.5">Meteor</span>
+                <div class="flex flex-col border-b border-gray-200/60 dark:border-gray-700/60 pb-2 pl-2">
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Model</span>
+                    <span id="modalBallModel" class="text-sm font-extrabold text-gray-800 dark:text-gray-200 mt-0.5">Meteor</span>
                 </div>
-                <div class="flex flex-col border-r border-gray-200/60 pt-2 pr-2">
-                    <span class="text-[10px] text-gray-400 font-bold uppercase">Size</span>
-                    <span class="text-sm font-extrabold text-gray-800 mt-0.5">5</span>
+                <div class="flex flex-col border-r border-gray-200/60 dark:border-gray-700/60 pt-2 pr-2">
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Size</span>
+                    <span class="text-sm font-extrabold text-gray-800 dark:text-gray-200 mt-0.5">5</span>
                 </div>
                 <div class="flex flex-col pt-2 pl-2">
-                    <span class="text-[10px] text-gray-400 font-bold uppercase">Condition</span>
-                    <span id="ballConditionDisplay" class="text-sm font-extrabold text-gray-800 mt-0.5">Brand New</span>
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500 font-bold uppercase">Condition</span>
+                    <span id="ballConditionDisplay" class="text-sm font-extrabold text-gray-800 dark:text-gray-200 mt-0.5">Brand New</span>
                 </div>
             </div>
 
             <div class="relative pb-2">
-                <label class="block text-2xs font-extrabold text-gray-400 uppercase tracking-wider mb-2">Available Colorway</label>
+                <label class="block text-2xs font-extrabold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">Available Colorway</label>
                 
-                <div id="colorDropdownBtn" onclick="toggleColorDropdown()" class="flex items-center justify-between w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-100/70 transition-all">
+                <div id="colorDropdownBtn" onclick="toggleColorDropdown()" class="flex items-center justify-between w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl cursor-pointer hover:bg-gray-100/70 dark:hover:bg-gray-800/70 transition-all">
                     <div class="flex items-center gap-3">
-                        <span id="selectedColorCircle" class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300"></span>
-                        <span id="selectedColorName" class="text-sm font-bold text-gray-800">White</span>
+                        <span id="selectedColorCircle" class="w-4 h-4 rounded-full bg-white border border-gray-300 dark:border-gray-700 shadow-sm transition-all duration-300"></span>
+                        <span id="selectedColorName" class="text-sm font-bold text-gray-800 dark:text-gray-200">White</span>
                     </div>
                     <svg id="colorDropdownArrow" class="w-4 h-4 text-gray-500 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
                     </svg>
                 </div>
                 
-                <div id="colorDropdownOptions" class="absolute left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden hidden z-50 max-h-48 overflow-y-auto custom-scrollbar">
+                <div id="colorDropdownOptions" class="absolute left-0 right-0 mt-2 bg-white dark:bg-gray-900 border border-gray-800 rounded-2xl shadow-xl overflow-hidden hidden z-50 max-h-48 overflow-y-auto custom-scrollbar">
                 </div>
             </div>
 
@@ -752,6 +792,54 @@
     </div>
 
     <script>
+        // System preference checking and setting
+        function initTheme() {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let savedTheme = null;
+            try {
+                savedTheme = localStorage.getItem('theme');
+            } catch(e) {}
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI(false);
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                document.documentElement.classList.remove('dark');
+                try { localStorage.setItem('theme', 'light'); } catch(e) {}
+                updateThemeUI(false);
+            } else {
+                document.documentElement.classList.add('dark');
+                try { localStorage.setItem('theme', 'dark'); } catch(e) {}
+                updateThemeUI(true);
+            }
+        }
+
+        function updateThemeUI(isDark) {
+            const sunIcon = document.getElementById('theme-sun');
+            const moonIcon = document.getElementById('theme-moon');
+            const themeText = document.getElementById('theme-text');
+            if (isDark) {
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+                if (themeText) themeText.innerText = "Light Mode";
+            } else {
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+                if (themeText) themeText.innerText = "Dark Mode";
+            }
+        }
+
+        // Initialize theme settings on DOM load
+        initTheme();
+
         function switchTab(tabId) {
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
@@ -761,7 +849,7 @@
 
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(tab => {
-                tab.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200";
+                tab.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200";
             });
 
             const activeContent = document.getElementById(`content-${tabId}`);
@@ -772,7 +860,7 @@
 
             const activeTabButton = document.getElementById(`tab-${tabId}`);
             if (activeTabButton) {
-                activeTabButton.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black transition-all duration-200";
+                activeTabButton.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black dark:border-white font-extrabold text-xs sm:text-sm text-black dark:text-white transition-all duration-200";
             }
         }
 
@@ -833,51 +921,51 @@
 
         const colorways = {
             meteor: `
-                <div onclick="selectColor('White', 'bg-white border border-gray-300')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
-                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">White</span>
+                <div onclick="selectColor('White', 'bg-white border border-gray-300')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 dark:border-gray-700 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">White</span>
                 </div>
-                <div onclick="selectColor('Red', 'bg-red-600')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Red', 'bg-red-600')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-red-600 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Red</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Red</span>
                 </div>
-                <div onclick="selectColor('Cyan', 'bg-cyan-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Cyan', 'bg-cyan-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-cyan-400 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Cyan</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Cyan</span>
                 </div>
-                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Orange</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Orange</span>
                 </div>
-                <div onclick="selectColor('Lime-Green', 'bg-lime-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Lime-Green', 'bg-lime-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-lime-500 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Lime-Green</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Lime-Green</span>
                 </div>
-                <div onclick="selectColor('Yellow', 'bg-yellow-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Yellow', 'bg-yellow-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-yellow-400 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Yellow</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Yellow</span>
                 </div>
-                <div onclick="selectColor('Dark Blue', 'bg-[#001C48]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                <div onclick="selectColor('Dark Blue', 'bg-[#001C48]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                     <span class="w-4 h-4 rounded-full bg-[#001C48] shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Dark Blue</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Dark Blue</span>
                 </div>
             `,
             crossfire: `
-                <div onclick="selectColor('White', 'bg-white border border-gray-300')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
-                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">White</span>
+                <div onclick="selectColor('White', 'bg-white border border-gray-300 dark:border-gray-700')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 dark:border-gray-700 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">White</span>
                 </div>
-                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Orange</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Orange</span>
                 </div>
-                <div onclick="selectColor('Dark Indigo', 'bg-[#1e1b4b]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                <div onclick="selectColor('Dark Indigo', 'bg-[#1e1b4b]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-50 dark:border-gray-700/50 transition-colors">
                     <span class="w-4 h-4 rounded-full bg-[#1e1b4b] shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Dark Indigo</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Dark Indigo</span>
                 </div>
-                <div onclick="selectColor('Black', 'bg-black')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                <div onclick="selectColor('Black', 'bg-black')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors">
                     <span class="w-4 h-4 rounded-full bg-black shadow-sm"></span>
-                    <span class="text-sm font-semibold text-gray-700">Black</span>
+                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-200">Black</span>
                 </div>
             `
         };
@@ -980,26 +1068,26 @@
 
                 if (clonturkScorersList) {
                     clonturkScorersList.innerHTML = `
-                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">2'</span></p>
-                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">9'</span></p>
-                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">13'</span></p>
-                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">15'</span></p>
-                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">23'</span></p>
-                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">28'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Dima <span class="text-gray-400 dark:text-gray-500 font-normal">2'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Dima <span class="text-gray-400 dark:text-gray-500 font-normal">9'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Dima <span class="text-gray-400 dark:text-gray-500 font-normal">13'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Liam <span class="text-gray-400 dark:text-gray-500 font-normal">15'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Dima <span class="text-gray-400 dark:text-gray-500 font-normal">23'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Dima <span class="text-gray-400 dark:text-gray-500 font-normal">28'</span></p>
                     `;
                 }
                 if (mountTempleScorersList) {
                     mountTempleScorersList.innerHTML = `
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Patrick</p>
-                        <p class="text-gray-900 leading-tight">
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'4</span> Patrick</p>
+                        <p class="text-gray-950 dark:text-white leading-tight">
                             <span class="text-yellow-500 font-bold block sm:inline">Yellow Card Received</span> 
-                            <span class="text-gray-900 font-normal">Joshua 6'</span>
+                            <span class="text-gray-900 dark:text-gray-300 font-normal">Joshua 6'</span>
                         </p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'11</span> Patrick</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'17</span> Joshua</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'20</span> Eanna</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'25</span> Eanna</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'7</span> Joshua</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'11</span> Patrick</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'17</span> Joshua</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'20</span> Eanna</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'25</span> Eanna</p>
                     `;
                 }
 
@@ -1086,8 +1174,8 @@
                 if (drawProbText) drawProbText.innerText = "Draw: 10%";
                 if (mountTempleProbText) mountTempleProbText.innerText = "Mount Temple: 55%";
 
-                if (statsMain) statsMain.classList.add('hidden');
-                if (statsUnavailable) statsUnavailable.classList.remove('hidden');
+                if (statsMain) statsMain.classList.remove('hidden');
+                if (statsUnavailable) statsUnavailable.classList.add('hidden');
 
                 if (knockoutMatchTitle) knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
                 if (knockoutBadge) knockoutBadge.innerText = "Upcoming Match";
@@ -1109,19 +1197,19 @@
                 if (scorersGrid) scorersGrid.classList.remove('hidden');
 
                 if (preseasonPenaltiesTag) preseasonPenaltiesTag.classList.add('hidden');
-                if (preseasonPenaltiesSection) preseasonPenaltiesSection.classList.add('hidden');
+                if (preseasonPenaltiesSection) preseasonPenaltiesSection.classList.remove('hidden');
 
                 if (clonturkScorersList) {
                     clonturkScorersList.innerHTML = `
-                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
-                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Liam <span class="text-gray-400 dark:text-gray-500 font-normal">3'</span></p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200">Liam <span class="text-gray-400 dark:text-gray-500 font-normal">5'</span></p>
                     `;
                 }
                 if (mountTempleScorersList) {
                     mountTempleScorersList.innerHTML = `
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
-                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'2</span> Joshua</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'4</span> Joshua</p>
+                        <p class="font-semibold text-gray-800 dark:text-gray-200"><span class="text-gray-400 dark:text-gray-500 font-normal">'7</span> Joshua</p>
                     `;
                 }
 

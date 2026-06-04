@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="IGGNowLogo.png">
+    <img src="IGGNowLogo.png" style="height:10em">
     <h1>IGG Now</h1>
     The home of IGG Football.
 </div>

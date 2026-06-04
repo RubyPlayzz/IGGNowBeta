@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IGG Club World Cup Match Center</title>
+    <title>IGG Match Center</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter -->
@@ -14,6 +14,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f3f4f6;
+            transition: overflow 0.2s ease;
         }
         /* Custom scrollbars for clean layouts */
         .custom-scrollbar::-webkit-scrollbar {
@@ -31,42 +32,80 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* Rise up entrance animations */
+        @keyframes riseUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-rise-container {
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-rise-header {
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+        }
+
+        .animate-rise-score {
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+        }
+
+        .animate-rise-tabs {
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+        }
+
+        .animate-rise-content {
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-start items-center p-2 sm:p-4 md:p-8">
 
-    <!-- Main Container -->
-    <div class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+    <!-- Main Container with Rise Up Entrance -->
+    <div class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container relative">
         
         <!-- TOP NAVIGATION BAR -->
-        <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-center border-b border-gray-100">
+        <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between border-b border-gray-100 animate-rise-header relative">
+            <!-- Back Button -->
+            <button id="backToFriendlyBtn" onclick="showMatch('completed')" class="absolute left-4 sm:left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs transition duration-250 hidden">
+                <span>←</span>
+                <span>Back to Friendly</span>
+            </button>
+
             <!-- League Info -->
-            <div class="flex items-center gap-2 text-gray-900 font-extrabold text-sm sm:text-base md:text-lg tracking-wide uppercase text-center">
-                <span>IGG Club World Cup</span>
+            <div class="mx-auto flex items-center gap-2 text-gray-900 font-extrabold text-xs sm:text-sm md:text-base tracking-wide text-center">
+                <span id="leagueTitle">IGG Friendlies</span>
             </div>
         </div>
 
         <!-- MATCH METADATA ROW -->
-        <div class="px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50/50 border-b border-gray-100 flex flex-wrap justify-center gap-y-2 gap-x-4 sm:gap-x-6 text-2xs xs:text-xs md:text-sm text-gray-500 font-medium">
+        <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-gray-50/50 border-b border-gray-100 flex flex-wrap justify-center gap-y-1.5 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs text-gray-400 font-semibold animate-rise-header">
             <span class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                     <line x1="16" y1="2" x2="16" y2="6" />
                     <line x1="8" y1="2" x2="8" y2="6" />
                     <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
-                Thu 4 June, 13:10
+                <span id="metaDate">Thur 4 June, 14:30</span>
             </span>
             <span class="flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
-                DCU Sports Complex
+                <span id="metaLocation">DCU Soccer Centre</span>
             </span>
         </div>
 
         <!-- SCOREBOARD BLOCK -->
-        <div class="p-4 sm:p-6 md:p-8 flex flex-col items-center">
+        <div class="p-4 sm:p-6 md:p-8 flex flex-col items-center animate-rise-score">
             
             <!-- Teams and Central Time -->
             <div class="w-full flex items-center justify-between gap-1 sm:gap-2 md:gap-4">
@@ -79,18 +118,21 @@
                     <!-- Clonturk Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 order-1 md:order-2 flex items-center justify-center">
                         <img src="Clonturk.png" alt="Clonturk FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <!-- Fallback Placeholder -->
                         <div class="hidden w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full bg-pink-100 text-pink-600 items-center justify-center font-bold text-3xs sm:text-xs">CFC</div>
                     </div>
                 </div>
 
                 <!-- Match Time Indicator -->
-                <div class="flex flex-col items-center justify-center shrink-0 min-w-[70px] sm:min-w-[100px] md:min-w-[150px]">
-                    <span class="bg-gray-100 text-gray-600 text-[8px] sm:text-[10px] md:text-xs font-semibold px-2 sm:px-3 py-0.5 sm:py-1 rounded-full mb-1 sm:mb-2 uppercase tracking-wider">
-                        Upcoming
+                <div class="flex flex-col items-center justify-center shrink-0 min-w-[75px] sm:min-w-[110px] md:min-w-[170px]">
+                    <span id="matchStatusLabel" class="text-black text-[10px] sm:text-xs font-bold mb-1 sm:mb-2 uppercase tracking-wider">
+                        Full Time
                     </span>
-                    <div class="text-lg sm:text-3xl md:text-5xl font-extrabold text-gray-900 tracking-wider font-mono">
-                        13:10
+                    <div id="matchScoreDisplay" class="text-xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 tracking-wider font-mono">
+                        2 - 3
+                    </div>
+                    <!-- Preseason Penalties Summary Tag -->
+                    <div id="preseasonPenaltiesTag" class="text-2xs sm:text-xs font-bold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full mt-1.5 hidden">
+                        (0 - 2 on pens)
                     </div>
                 </div>
 
@@ -99,7 +141,6 @@
                     <!-- Mount Temple Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
                         <img src="MountTemple.png" alt="Mount Temple FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <!-- Fallback Placeholder -->
                         <div class="hidden w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full bg-blue-100 text-blue-900 items-center justify-center font-bold text-3xs sm:text-xs">MTFC</div>
                     </div>
                     <h2 class="font-extrabold text-gray-900 text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight text-center md:text-left leading-tight">
@@ -109,12 +150,101 @@
 
             </div>
 
+            <!-- SCORERS DETAIL GRID -->
+            <div id="scorersGrid" class="w-full grid grid-cols-11 items-start mt-6 text-xs md:text-sm text-gray-600 border-t border-gray-200 pt-6">
+                <!-- Clonturk Scorers Container -->
+                <div id="clonturkScorersList" class="col-span-5 text-right space-y-1">
+                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
+                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
+                </div>
+                
+                <!-- Center Icon (Updated to use footballoutline.svg) -->
+                <div class="col-span-1 flex justify-center items-center py-1">
+                    <img src="footballoutline.svg" alt="Football" class="w-4 h-4 object-contain opacity-50" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <!-- Graceful Vector Fallback if image isn't available -->
+                    <svg class="hidden w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8l3 2.2v3.6L12 16l-3-2.2v-3.6z" />
+                    </svg>
+                </div>
+
+                <!-- Mount Temple Scorers Container -->
+                <div id="mountTempleScorersList" class="col-span-5 text-left space-y-1">
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                </div>
+            </div>
+
+            <!-- PRESEASON PENALTY SHOOTOUT DETAIL SECTION -->
+            <div id="preseasonPenaltiesSection" class="w-full mt-6 border-t border-gray-200 pt-6 hidden">
+                <div class="text-center mb-4">
+                    <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Penalty Shootout (0 - 2)</span>
+                </div>
+                
+                <div class="grid grid-cols-11 items-start text-xs md:text-sm text-gray-600">
+                    
+                    <div id="clonturkPensList" class="col-span-5 text-right space-y-3">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <span class="text-gray-500 font-medium">Dima</span>
+                            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-end gap-1.5">
+                            <span class="text-gray-500 font-medium">Liam</span>
+                            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-end gap-1.5">
+                            <span class="text-gray-500 font-medium">Liam</span>
+                            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-end gap-1.5">
+                            <span class="text-gray-500 font-medium">Dima</span>
+                            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="col-span-1 flex justify-center text-gray-200 py-1 font-bold text-2xs select-none">
+                        VS
+                    </div>
+
+                    <div id="mountTemplePensList" class="col-span-5 text-left space-y-3">
+                        <div class="flex items-center justify-start gap-1.5">
+                            <svg class="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-900 font-semibold">Patrick</span>
+                        </div>
+                        <div class="flex items-center justify-start gap-1.5">
+                            <svg class="w-4 h-4 text-green-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span class="text-gray-900 font-semibold">Joshua</span>
+                        </div>
+                        <div class="flex items-center justify-start gap-1.5">
+                            <svg class="w-4 h-4 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <span class="text-gray-900 font-semibold">Eanna</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
 
         <!-- TABS BAR -->
-        <div class="border-b border-gray-200 overflow-x-auto custom-scrollbar">
+        <div class="border-b border-gray-200 overflow-x-auto custom-scrollbar animate-rise-tabs">
             <nav class="flex justify-between md:justify-around px-2 sm:px-4 min-w-[450px]" aria-label="Tabs">
-                <button onclick="switchTab('facts')" id="tab-facts" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
+                <button onclick="switchTab('facts')" id="tab-facts" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black transition-all duration-200">
                     Facts
                 </button>
                 <button onclick="switchTab('lineup')" id="tab-lineup" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
@@ -126,95 +256,58 @@
                 <button onclick="switchTab('stats')" id="tab-stats" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
                     Stats
                 </button>
-                <button onclick="switchTab('headtohead')" id="tab-headtohead" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black transition-all duration-200">
+                <button onclick="switchTab('headtohead')" id="tab-headtohead" class="tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200">
                     Head-to-Head
                 </button>
             </nav>
         </div>
 
         <!-- TAB CONTENT AREA -->
-        <div class="p-4 sm:p-6 md:p-8 bg-gray-50/30">
-
-            <!-- HEAD-TO-HEAD TAB (Active by default) -->
-            <div id="content-headtohead" class="tab-content block space-y-4 sm:space-y-6">
-                <!-- Wins/Draws/Wins Visualizer Box -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex items-center justify-around">
-                    
-                    <!-- Home Logo Mini -->
-                    <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
-                            <img src="Clonturk.png" alt="Clonturk" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-pink-100 text-pink-600 items-center justify-center font-bold text-3xs sm:text-xs">CFC</div>
-                        </div>
-                    </div>
-
-                    <!-- Clonturk Wins Badge -->
-                    <div class="flex flex-col items-center gap-1 sm:gap-2">
-                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#FF69B4] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
-                            0
-                        </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
-                    </div>
-
-                    <!-- Draws Badge -->
-                    <div class="flex flex-col items-center gap-1 sm:gap-2">
-                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-white border border-gray-100 text-gray-900 font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
-                            0
-                        </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 tracking-wide uppercase">Draws</span>
-                    </div>
-
-                    <!-- Mount Temple Wins Badge -->
-                    <div class="flex flex-col items-center gap-1 sm:gap-2">
-                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#001C48] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
-                            1
-                        </div>
-                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
-                    </div>
-
-                    <!-- Away Logo Mini -->
-                    <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
-                            <img src="MountTemple.png" alt="Mount Temple" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-900 items-center justify-center font-bold text-3xs sm:text-xs">MTFC</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Previous Matches History -->
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm">
-                    <h3 class="font-bold text-gray-800 text-sm md:text-base mb-4 flex items-center gap-2">
-                        Previous Encounters
-                    </h3>
-                    <div class="space-y-3">
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm border-b border-gray-50 pb-2.5 gap-2">
-                            <span class="text-gray-400 font-medium">29 Apr 2026</span>
-                            <span class="font-medium text-gray-700">
-                                Clonturk FC II <span class="font-bold text-gray-900">6 - 6</span> Mount Temple FC II 
-                                <span class="text-xs text-blue-900 font-semibold block sm:inline sm:ml-1">(0 - 2 on penalties)</span>
-                            </span>
-                            <span class="text-blue-900 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
-                                Pre-Seasonal Match
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="p-4 sm:p-6 md:p-8 bg-gray-50/30 animate-rise-content">
 
             <!-- FACTS TAB -->
-            <div id="content-facts" class="tab-content hidden space-y-4 sm:space-y-6">
+            <div id="content-facts" class="tab-content block space-y-4 sm:space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm space-y-4">
                         <h3 class="font-bold text-gray-800 text-sm md:text-base">Match Information</h3>
                         <div class="space-y-3 text-xs sm:text-sm">
-                            <div class="flex justify-between py-1.5 border-b border-gray-50">
-                                <span class="text-gray-500">Match Ball</span>
-                                <span class="font-medium text-gray-800 text-right pl-2">Size 5 White Sondico Meteor Football</span>
+                            
+                            <!-- Location Row -->
+                            <div id="locationHoverRow" onclick="window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
+                                <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
+                                    <span class="text-gray-500">Location</span>
+                                    <span id="factLocationText" class="font-medium text-gray-800 text-right text-xs sm:text-sm">DCU Soccer Centre, Whitehall, Dublin</span>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
+                                    <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
+                                        Learn More ➔
+                                    </span>
+                                </div>
                             </div>
+
+                            <!-- Match Ball Row -->
+                            <div onclick="openBallModal()" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
+                                <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
+                                    <span class="text-gray-500">Match Ball</span>
+                                    <span id="factBallText" class="font-medium text-gray-800 text-right pl-2 text-xs sm:text-sm">Size 5 White Sondico Meteor Football</span>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
+                                    <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 animate-pulse">
+                                        Learn More ➔
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Surface Row -->
+                            <div class="flex justify-between py-1.5 border-b border-gray-50">
+                                <span class="text-gray-500">Surface</span>
+                                <span id="surfaceText" class="font-medium text-gray-800">Astro</span>
+                            </div>
+
+                            <!-- Weather Condition Row -->
                             <div class="flex justify-between py-1.5 border-b border-gray-50">
                                 <span class="text-gray-500">Weather Condition</span>
-                                <span class="font-medium text-gray-800">Cloudy, 16°C</span>
+                                <span id="weatherDisplay" class="font-medium text-gray-800">Rainy, 14°C</span>
                             </div>
                         </div>
                     </div>
@@ -226,16 +319,15 @@
                                 <span class="font-bold text-[#FF69B4]">Clonturk Win</span>
                                 <span class="font-bold text-[#001C48]">Mount Temple Win</span>
                             </div>
-                            <!-- Probability Bar: Pink for Clonturk, Dark Blue for Mount Temple -->
                             <div class="w-full bg-gray-100 rounded-full h-3.5 overflow-hidden flex">
-                                <div class="bg-[#FF69B4] h-full" style="width: 45%"></div>
-                                <div class="bg-gray-300 h-full" style="width: 10%"></div>
-                                <div class="bg-[#001C48] h-full" style="width: 45%"></div>
+                                <div id="clonturkProbBar" class="bg-[#FF69B4] h-full" style="width: 45%"></div>
+                                <div id="drawProbBar" class="bg-gray-300 h-full" style="width: 10%"></div>
+                                <div id="mountTempleProbBar" class="bg-[#001C48] h-full ml-auto" style="width: 45%"></div>
                             </div>
                             <div class="flex justify-between text-xs text-gray-500">
-                                <span>Clonturk: 45%</span>
-                                <span>Draw: 10%</span>
-                                <span>Mount Temple: 45%</span>
+                                <span id="clonturkProbText">Clonturk: 45%</span>
+                                <span id="drawProbText">Draw: 10%</span>
+                                <span id="mountTempleProbText">Mount Temple: 45%</span>
                             </div>
                         </div>
                     </div>
@@ -247,13 +339,12 @@
                 <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex flex-col items-center">
                     <h3 class="font-bold text-gray-800 text-sm md:text-base mb-4 self-start">Team Lineups</h3>
                     <div class="w-full max-w-lg flex items-center justify-center border border-gray-100 rounded-xl overflow-hidden bg-gray-50 p-2 sm:p-4">
-                        <img src="Lineup.png" alt="Lineup" class="max-w-full h-auto rounded-lg shadow-sm" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <!-- Fallback Placeholder -->
-                        <div class="hidden text-center p-6 sm:p-8 text-gray-500">
+                        <img id="lineupImage" src="Lineup.png" alt="Lineup" class="max-w-full h-auto rounded-lg shadow-sm animate-rise-content" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden text-center p-6 sm:p-8 text-gray-500 animate-pulse">
                             <svg class="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-gray-300 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <p class="text-xs sm:text-sm font-semibold">Lineup image (Lineup.png) not found</p>
+                            <p id="lineupPlaceholderText" class="text-xs sm:text-sm font-semibold text-gray-700">Lineups will be posted soon.</p>
                         </div>
                     </div>
                 </div>
@@ -262,19 +353,64 @@
             <!-- KNOCKOUT TAB -->
             <div id="content-knockout" class="tab-content hidden space-y-4 sm:space-y-6">
                 <div class="bg-white rounded-2xl p-6 sm:p-10 border border-gray-100 shadow-sm space-y-4 text-center py-8 sm:py-12">
-                    <h3 class="font-extrabold text-gray-800 text-base sm:text-lg md:text-xl">Clonturk vs Mount Temple</h3>
-                    <div class="inline-block px-4 py-1.5 bg-blue-50 text-blue-700 text-2xs sm:text-xs font-bold rounded-full tracking-wider uppercase mb-2">
+                    <h3 id="knockoutMatchTitle" class="font-extrabold text-gray-800 text-base sm:text-lg md:text-xl">Clonturk vs Mount Temple</h3>
+                    <div id="knockoutBadge" class="inline-block px-4 py-1.5 bg-blue-50 text-blue-700 text-2xs sm:text-xs font-bold rounded-full tracking-wider uppercase mb-2">
                         Upcoming Match
                     </div>
-                    <p class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
-                        This match will kick off on Thursday 4th of June at 13:10. Follow the page live for match updates once the game starts.
+                    <p id="knockoutDescription" class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                        Date and Time will be decided soon. This match will be the real IGG Club World Cup.
                     </p>
+                    <div id="knockoutActionArea" class="pt-2">
+                        <button onclick="showMatch('upcoming')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-full tracking-wider uppercase shadow-sm transition-all duration-200">
+                            More Details
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- STATS TAB -->
             <div id="content-stats" class="tab-content hidden space-y-4">
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm text-center py-10 sm:py-12 space-y-3">
+                <div id="statsMainContainer" class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm space-y-5">
+                    <h3 id="statsMainTitle" class="font-bold text-gray-800 text-sm md:text-base mb-4">Match Statistics</h3>
+                    
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs md:text-sm">
+                            <span id="clonturkPossessionVal" class="font-bold text-gray-800">30%</span>
+                            <span class="text-gray-500 font-semibold">Possession</span>
+                            <span id="mountTemplePossessionVal" class="font-bold text-gray-800">70%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
+                            <div id="clonturkPossessionBar" class="bg-[#FF69B4] h-full" style="width: 30%"></div>
+                            <div id="mountTemplePossessionBar" class="bg-[#001C48] h-full ml-auto" style="width: 70%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs md:text-sm">
+                            <span id="clonturkShotsVal" class="font-bold text-gray-800">4</span>
+                            <span class="text-gray-500 font-semibold">Shots</span>
+                            <span id="mountTempleShotsVal" class="font-bold text-gray-800">6</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
+                            <div id="clonturkShotsBar" class="bg-[#FF69B4] h-full" style="width: 40%"></div>
+                            <div id="mountTempleShotsBar" class="bg-[#001C48] h-full ml-auto" style="width: 60%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-xs md:text-sm">
+                            <span id="clonturkOnTargetVal" class="font-bold text-gray-800">2</span>
+                            <span class="text-gray-500 font-semibold">Shots on Target</span>
+                            <span id="mountTempleOnTargetVal" class="font-bold text-gray-800">5</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden flex">
+                            <div id="clonturkOnTargetBar" class="bg-[#FF69B4] h-full" style="width: 28%"></div>
+                            <div id="mountTempleOnTargetBar" class="bg-[#001C48] h-full ml-auto" style="width: 72%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="statsUnavailableContainer" class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm text-center py-10 sm:py-12 space-y-3 hidden">
                     <div class="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto text-gray-400">
                         <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -287,38 +423,563 @@
                 </div>
             </div>
 
+            <!-- HEAD-TO-HEAD TAB -->
+            <div id="content-headtohead" class="tab-content hidden space-y-4 sm:space-y-6">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex items-center justify-around animate-rise-content">
+                    
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
+                            <img src="Clonturk.png" alt="Clonturk" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-pink-100 text-pink-600 items-center justify-center font-bold text-3xs sm:text-xs">CFC</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-1 sm:gap-2">
+                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#FF69B4] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
+                            0
+                        </div>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-1 sm:gap-2">
+                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-white border border-gray-100 text-gray-900 font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
+                            0
+                        </div>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400 tracking-wide uppercase">Draws</span>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-1 sm:gap-2">
+                        <div class="w-11 sm:w-16 py-1.5 sm:py-2.5 bg-[#001C48] text-white font-black text-sm sm:text-lg md:text-xl rounded-full text-center tracking-tight shadow-sm">
+                            2
+                        </div>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-800 tracking-wide uppercase">Wins</span>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-1">
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
+                            <img src="MountTemple.png" alt="Mount Temple" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-900 items-center justify-center font-bold text-3xs sm:text-xs">MTFC</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Previous Matches History -->
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm animate-rise-content">
+                    <h3 class="font-bold text-gray-800 text-sm md:text-base mb-4 flex items-center gap-2">
+                        Previous Encounters
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm border-b border-gray-50 pb-2.5 gap-2">
+                            <span class="text-gray-400 font-medium">4 Jun 2026</span>
+                            <span class="font-medium text-gray-700">
+                                Clonturk FC II <span class="font-bold text-gray-900">2 - 3</span> Mount Temple FC II
+                            </span>
+                            <span class="text-[#001C48] bg-blue-50 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
+                                Friendly Match
+                            </span>
+                        </div>
+
+                        <!-- Interactive 6-6 Pre-season row -->
+                        <div onclick="showMatch('preseason')" class="group relative flex justify-between items-center py-2.5 border-b border-gray-50 overflow-hidden cursor-pointer h-12 transition-all duration-300">
+                            <div class="w-full flex flex-col sm:flex-row sm:items-center justify-between text-xs md:text-sm gap-2 transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
+                                <span class="text-gray-400 font-medium">26 Apr 2026</span>
+                                <span class="font-medium text-gray-700">
+                                    Clonturk FC II <span class="font-bold text-gray-900">6 - 6</span> Mount Temple FC II 
+                                    <span class="text-xs text-blue-900 font-semibold block sm:inline sm:ml-1">(0 - 2 on penalties)</span>
+                                </span>
+                                <span class="text-blue-900 bg-blue-50 px-2.5 py-1 rounded-full text-xs font-semibold self-start sm:self-auto">
+                                    Pre-Seasonal Match
+                                </span>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
+                                <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
+                                    View Match
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Script Section for Interactions -->
+    <!-- SONDICO MATCH BALL DETAILS POPUP MODAL -->
+    <div id="ballModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="ballModalContent" class="bg-white rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl transform -translate-y-24 scale-95 opacity-0 transition-all duration-300 relative p-6 space-y-5">
+            
+            <button onclick="closeBallModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors bg-gray-50 p-1.5 rounded-full">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="text-center">
+                <h3 id="modalBallTitle" class="font-extrabold text-xl text-gray-900 tracking-tight">Sondico Meteor</h3>
+                <p class="text-xs text-gray-500 font-medium">Official Match Ball Information</p>
+            </div>
+
+            <div class="w-40 h-40 mx-auto flex items-center justify-center bg-gray-50/50 rounded-2xl border border-gray-100 p-3">
+                <img id="modalBallImage" src="SondicoMeteorSize5.AVIF" alt="Match Ball" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <!-- Backup customized football vector graphic if image doesn't load -->
+                <div class="hidden flex-col items-center justify-center text-gray-300">
+                    <img src="footballoutline.svg" alt="Football" class="w-16 h-16 object-contain opacity-50" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="hidden flex-col items-center justify-center text-gray-400 animate-pulse">
+                        <svg class="w-16 h-16 text-gray-400 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 8l3 2.2v3.6L12 16l-3-2.2v-3.6z" />
+                        </svg>
+                        <span class="text-2xs font-bold mt-2">Football</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 bg-gray-50 rounded-2xl p-4 text-center">
+                <div class="flex flex-col border-b border-r border-gray-200/60 pb-2 pr-2">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase">Company</span>
+                    <span class="text-sm font-extrabold text-gray-800 mt-0.5">Sondico</span>
+                </div>
+                <div class="flex flex-col border-b border-gray-200/60 pb-2 pl-2">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase">Model</span>
+                    <span id="modalBallModel" class="text-sm font-extrabold text-gray-800 mt-0.5">Meteor</span>
+                </div>
+                <div class="flex flex-col border-r border-gray-200/60 pt-2 pr-2">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase">Size</span>
+                    <span class="text-sm font-extrabold text-gray-800 mt-0.5">5</span>
+                </div>
+                <div class="flex flex-col pt-2 pl-2">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase">Condition</span>
+                    <span id="ballConditionDisplay" class="text-sm font-extrabold text-gray-800 mt-0.5">Brand New</span>
+                </div>
+            </div>
+
+            <div class="relative pb-2">
+                <label class="block text-2xs font-extrabold text-gray-400 uppercase tracking-wider mb-2">Available Colorway</label>
+                
+                <div id="colorDropdownBtn" onclick="toggleColorDropdown()" class="flex items-center justify-between w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl cursor-pointer hover:bg-gray-100/70 transition-all">
+                    <div class="flex items-center gap-3">
+                        <span id="selectedColorCircle" class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300"></span>
+                        <span id="selectedColorName" class="text-sm font-bold text-gray-800">White</span>
+                    </div>
+                    <svg id="colorDropdownArrow" class="w-4 h-4 text-gray-500 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </div>
+                
+                <div id="colorDropdownOptions" class="absolute left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden hidden z-50 max-h-48 overflow-y-auto custom-scrollbar">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <script>
-        // Tab Switching Logic
         function switchTab(tabId) {
-            // Hide all tab contents
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => {
                 content.classList.add('hidden');
                 content.classList.remove('block');
             });
 
-            // Reset all tab button styling
             const tabs = document.querySelectorAll('.tab-btn');
             tabs.forEach(tab => {
                 tab.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent font-semibold text-xs sm:text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200";
             });
 
-            // Show selected tab content
             const activeContent = document.getElementById(`content-${tabId}`);
             if (activeContent) {
                 activeContent.classList.remove('hidden');
                 activeContent.classList.add('block');
             }
 
-            // Set active class on clicked tab button
             const activeTabButton = document.getElementById(`tab-${tabId}`);
             if (activeTabButton) {
                 activeTabButton.className = "tab-btn py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-black font-extrabold text-xs sm:text-sm text-black transition-all duration-200";
+            }
+        }
+
+        function toggleColorDropdown() {
+            const options = document.getElementById('colorDropdownOptions');
+            const arrow = document.getElementById('colorDropdownArrow');
+            if (options.classList.contains('hidden')) {
+                options.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                options.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+
+        function selectColor(colorName, bgClass) {
+            const selectedCircle = document.getElementById('selectedColorCircle');
+            const selectedName = document.getElementById('selectedColorName');
+            selectedCircle.className = "w-4 h-4 rounded-full shadow-sm transition-all duration-300 " + bgClass;
+            selectedName.innerText = colorName;
+            toggleColorDropdown();
+        }
+
+        // Ball Modal Logic
+        function openBallModal() {
+            const modal = document.getElementById('ballModal');
+            const modalContent = document.getElementById('ballModalContent');
+            document.body.classList.add('overflow-hidden');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('-translate-y-24', 'scale-95', 'opacity-0');
+            modalContent.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+        }
+
+        function closeBallModal() {
+            const modal = document.getElementById('ballModal');
+            const modalContent = document.getElementById('ballModalContent');
+            const colorOptions = document.getElementById('colorDropdownOptions');
+            const arrow = document.getElementById('colorDropdownArrow');
+            document.body.classList.remove('overflow-hidden');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100');
+            modalContent.classList.add('-translate-y-24', 'scale-95', 'opacity-0');
+            modalContent.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+            colorOptions.classList.add('hidden');
+            arrow.classList.remove('rotate-180');
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('ballModal');
+            if (event.target === modal) {
+                closeBallModal();
+            }
+        }
+
+        const colorways = {
+            meteor: `
+                <div onclick="selectColor('White', 'bg-white border border-gray-300')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">White</span>
+                </div>
+                <div onclick="selectColor('Red', 'bg-red-600')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-red-600 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Red</span>
+                </div>
+                <div onclick="selectColor('Cyan', 'bg-cyan-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-cyan-400 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Cyan</span>
+                </div>
+                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Orange</span>
+                </div>
+                <div onclick="selectColor('Lime-Green', 'bg-lime-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-lime-500 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Lime-Green</span>
+                </div>
+                <div onclick="selectColor('Yellow', 'bg-yellow-400')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-yellow-400 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Yellow</span>
+                </div>
+                <div onclick="selectColor('Dark Blue', 'bg-[#001C48]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-[#001C48] shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Dark Blue</span>
+                </div>
+            `,
+            crossfire: `
+                <div onclick="selectColor('White', 'bg-white border border-gray-300')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">White</span>
+                </div>
+                <div onclick="selectColor('Orange', 'bg-orange-500')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-orange-500 shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Orange</span>
+                </div>
+                <div onclick="selectColor('Dark Indigo', 'bg-[#1e1b4b]')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-[#1e1b4b] shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Dark Indigo</span>
+                </div>
+                <div onclick="selectColor('Black', 'bg-black')" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
+                    <span class="w-4 h-4 rounded-full bg-black shadow-sm"></span>
+                    <span class="text-sm font-semibold text-gray-700">Black</span>
+                </div>
+            `
+        };
+
+        function showMatch(matchType) {
+            const leagueTitle = document.getElementById('leagueTitle');
+            const metaDate = document.getElementById('metaDate');
+            const metaLocation = document.getElementById('metaLocation');
+            const matchStatusLabel = document.getElementById('matchStatusLabel');
+            const matchScoreDisplay = document.getElementById('matchScoreDisplay');
+            const scorersGrid = document.getElementById('scorersGrid');
+            const backBtn = document.getElementById('backToFriendlyBtn');
+
+            const preseasonPenaltiesTag = document.getElementById('preseasonPenaltiesTag');
+            const preseasonPenaltiesSection = document.getElementById('preseasonPenaltiesSection');
+            const clonturkScorersList = document.getElementById('clonturkScorersList');
+            const mountTempleScorersList = document.getElementById('mountTempleScorersList');
+
+            const factLocationText = document.getElementById('factLocationText');
+            const factBallText = document.getElementById('factBallText');
+            const locationHoverRow = document.getElementById('locationHoverRow');
+            const surfaceText = document.getElementById('surfaceText');
+            const weatherDisplay = document.getElementById('weatherDisplay');
+
+            const modalBallTitle = document.getElementById('modalBallTitle');
+            const modalBallModel = document.getElementById('modalBallModel');
+            const modalBallImage = document.getElementById('modalBallImage');
+            const ballConditionDisplay = document.getElementById('ballConditionDisplay');
+            const colorOptionsDropdown = document.getElementById('colorDropdownOptions');
+
+            const selectedCircle = document.getElementById('selectedColorCircle');
+            const selectedName = document.getElementById('selectedColorName');
+            
+            const clonturkProbBar = document.getElementById('clonturkProbBar');
+            const drawProbBar = document.getElementById('drawProbBar');
+            const mountTempleProbBar = document.getElementById('mountTempleProbBar');
+            const clonturkProbText = document.getElementById('clonturkProbText');
+            const drawProbText = document.getElementById('drawProbText');
+            const mountTempleProbText = document.getElementById('mountTempleProbText');
+
+            const statsMain = document.getElementById('statsMainContainer');
+            const statsUnavailable = document.getElementById('statsUnavailableContainer');
+            const lineupImage = document.getElementById('lineupImage');
+            const lineupsText = document.getElementById('lineupPlaceholderText');
+
+            const clonturkPossessionVal = document.getElementById('clonturkPossessionVal');
+            const mountTemplePossessionVal = document.getElementById('mountTemplePossessionVal');
+            const clonturkPossessionBar = document.getElementById('clonturkPossessionBar');
+            const mountTemplePossessionBar = document.getElementById('mountTemplePossessionBar');
+
+            const clonturkShotsVal = document.getElementById('clonturkShotsVal');
+            const mountTempleShotsVal = document.getElementById('mountTempleShotsVal');
+            const clonturkShotsBar = document.getElementById('clonturkShotsBar');
+            const mountTempleShotsBar = document.getElementById('mountTempleShotsBar');
+
+            const clonturkOnTargetVal = document.getElementById('clonturkOnTargetVal');
+            const mountTempleOnTargetVal = document.getElementById('mountTempleOnTargetVal');
+            const clonturkOnTargetBar = document.getElementById('clonturkOnTargetBar');
+            const mountTempleOnTargetBar = document.getElementById('mountTempleOnTargetBar');
+
+            const knockoutMatchTitle = document.getElementById('knockoutMatchTitle');
+            const knockoutBadge = document.getElementById('knockoutBadge');
+            const knockoutDescription = document.getElementById('knockoutDescription');
+            const knockoutAction = document.getElementById('knockoutActionArea');
+
+            if (matchType === 'preseason') {
+                leagueTitle.innerText = "IGG Pre-Seasonal Match";
+                metaDate.innerText = "Wednesday 26 April";
+                metaLocation.innerText = "Albert College Park Soccer Pitches";
+                matchStatusLabel.innerText = "Full Time";
+                matchScoreDisplay.innerText = "6 - 6";
+                scorersGrid.classList.remove('hidden');
+                backBtn.classList.remove('hidden');
+
+                preseasonPenaltiesTag.classList.remove('hidden');
+                preseasonPenaltiesSection.classList.remove('hidden');
+
+                // Suffix formatting on Left (Clonturk), Prefix flipped formatting on Right (Mount Temple)
+                clonturkScorersList.innerHTML = `
+                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">2'</span></p>
+                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">9'</span></p>
+                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">13'</span></p>
+                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">15'</span></p>
+                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">23'</span></p>
+                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">28'</span></p>
+                `;
+                mountTempleScorersList.innerHTML = `
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Patrick</p>
+                    <p class="text-gray-900 leading-tight">
+                        <span class="text-yellow-500 font-bold block sm:inline">Yellow Card Received</span> 
+                        <span class="text-gray-900 font-normal">Joshua 6'</span>
+                    </p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'11</span> Patrick</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'17</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'20</span> Eanna</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'25</span> Eanna</p>
+                `;
+
+                // Adjust Facts Tab info
+                factLocationText.innerText = "Albert College Park Soccer Pitches, Whitehall, Dublin";
+                factBallText.innerText = "Size 5 White Sondico Crossfire Football";
+                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/CuxEL2tzkKHB7mnL8', '_blank')");
+                surfaceText.innerText = "Grass";
+                weatherDisplay.innerText = "Sunny, 20°C";
+
+                // Modal Ball Swaps
+                modalBallTitle.innerText = "Sondico Crossfire";
+                modalBallModel.innerText = "Crossfire";
+                ballConditionDisplay.innerText = "Alright (Slight Wear)";
+                modalBallImage.setAttribute("src", "SondicoCrxssfireSize5.webp");
+                colorOptionsDropdown.innerHTML = colorways.crossfire;
+                
+                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                selectedName.innerText = "White";
+
+                // Probability even settings
+                clonturkProbBar.style.width = '45%';
+                drawProbBar.style.width = '10%';
+                mountTempleProbBar.style.width = '45%';
+                clonturkProbText.innerText = "Clonturk: 45%";
+                drawProbText.innerText = "Draw: 10%";
+                mountTempleProbText.innerText = "Mount Temple: 45%";
+
+                statsMain.classList.remove('hidden');
+                statsUnavailable.classList.add('hidden');
+
+                clonturkPossessionVal.innerText = "48%";
+                mountTemplePossessionVal.innerText = "52%";
+                clonturkPossessionBar.style.width = '48%';
+                mountTemplePossessionBar.style.width = '52%';
+
+                clonturkShotsVal.innerText = "14";
+                mountTempleShotsVal.innerText = "12";
+                clonturkShotsBar.style.width = '54%';
+                mountTempleShotsBar.style.width = '46%';
+
+                clonturkOnTargetVal.innerText = "8";
+                mountTempleOnTargetVal.innerText = "9";
+                clonturkOnTargetBar.style.width = '47%';
+                mountTempleOnTargetBar.style.width = '53%';
+
+                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                knockoutBadge.innerText = "Upcoming Match";
+                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                knockoutAction.classList.remove('hidden');
+
+                lineupImage.setAttribute("src", "LineupOG.png");
+                if (lineupsText) {
+                    lineupsText.innerText = "Lineups will be posted soon.";
+                }
+
+            } else if (matchType === 'upcoming') {
+                leagueTitle.innerText = "IGG Club World Cup";
+                metaDate.innerText = "Date and time: TBD";
+                metaLocation.innerText = "DCU Soccer Centre";
+                matchStatusLabel.innerText = "Upcoming";
+                matchScoreDisplay.innerText = "TBD";
+                scorersGrid.classList.add('hidden');
+                backBtn.classList.remove('hidden');
+
+                preseasonPenaltiesTag.classList.add('hidden');
+                preseasonPenaltiesSection.classList.add('hidden');
+
+                factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
+                factBallText.innerText = "Size 5 White Sondico Meteor Football";
+                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
+                surfaceText.innerText = "Astro";
+                weatherDisplay.innerText = "No Data";
+
+                modalBallTitle.innerText = "Sondico Meteor";
+                modalBallModel.innerText = "Meteor";
+                ballConditionDisplay.innerText = "Basically Brand New";
+                modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
+                colorOptionsDropdown.innerHTML = colorways.meteor;
+
+                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                selectedName.innerText = "White";
+
+                clonturkProbBar.style.width = '35%';
+                drawProbBar.style.width = '10%';
+                mountTempleProbBar.style.width = '55%';
+                clonturkProbText.innerText = "Clonturk: 35%";
+                drawProbText.innerText = "Draw: 10%";
+                mountTempleProbText.innerText = "Mount Temple: 55%";
+
+                statsMain.classList.add('hidden');
+                statsUnavailable.classList.remove('hidden');
+
+                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                knockoutBadge.innerText = "Upcoming Match";
+                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                knockoutAction.classList.add('hidden');
+
+                lineupImage.setAttribute("src", "Lineup.png");
+                if (lineupsText) {
+                    lineupsText.innerText = "Lineups will be posted after the game.";
+                }
+
+            } else {
+                leagueTitle.innerText = "IGG Friendlies";
+                metaDate.innerText = "Thur 4 June, 14:30";
+                metaLocation.innerText = "DCU Soccer Centre";
+                matchStatusLabel.innerText = "Full Time";
+                matchScoreDisplay.innerText = "2 - 3";
+                scorersGrid.classList.remove('hidden');
+                backBtn.classList.add('hidden');
+
+                preseasonPenaltiesTag.classList.add('hidden');
+                preseasonPenaltiesSection.classList.add('hidden');
+
+                clonturkScorersList.innerHTML = `
+                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
+                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
+                `;
+                mountTempleScorersList.innerHTML = `
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
+                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                `;
+
+                factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
+                factBallText.innerText = "Size 5 White Sondico Meteor Football";
+                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
+                surfaceText.innerText = "Astro";
+                weatherDisplay.innerText = "Rainy, 14°C";
+
+                modalBallTitle.innerText = "Sondico Meteor";
+                modalBallModel.innerText = "Meteor";
+                ballConditionDisplay.innerText = "Brand New";
+                modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
+                colorOptionsDropdown.innerHTML = colorways.meteor;
+
+                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                selectedName.innerText = "White";
+
+                clonturkProbBar.style.width = '45%';
+                drawProbBar.style.width = '10%';
+                mountTempleProbBar.style.width = '45%';
+                clonturkProbText.innerText = "Clonturk: 45%";
+                drawProbText.innerText = "Draw: 10%";
+                mountTempleProbText.innerText = "Mount Temple: 45%";
+
+                statsMain.classList.remove('hidden');
+                statsUnavailable.classList.add('hidden');
+
+                clonturkPossessionVal.innerText = "30%";
+                mountTemplePossessionVal.innerText = "70%";
+                clonturkPossessionBar.style.width = '30%';
+                mountTemplePossessionBar.style.width = '70%';
+
+                clonturkShotsVal.innerText = "4";
+                mountTempleShotsVal.innerText = "6";
+                clonturkShotsBar.style.width = '40%';
+                mountTempleShotsBar.style.width = '60%';
+
+                clonturkOnTargetVal.innerText = "2";
+                mountTempleOnTargetVal.innerText = "5";
+                clonturkOnTargetBar.style.width = '28%';
+                mountTempleOnTargetBar.style.width = '72%';
+
+                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                knockoutBadge.innerText = "Upcoming Match";
+                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                knockoutAction.classList.remove('hidden');
+
+                lineupImage.setAttribute("src", "Lineup.png");
+                if (lineupsText) {
+                    lineupsText.innerText = "Lineups will be posted soon.";
+                }
+            }
+
+            switchTab('facts');
+
+            // Force restart structural DOM rise animation
+            const container = document.querySelector('.animate-rise-container');
+            if (container) {
+                container.style.animation = 'none';
+                container.offsetHeight;
+                container.style.animation = '';
             }
         }
     </script>

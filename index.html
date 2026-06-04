@@ -54,29 +54,191 @@
         }
 
         .animate-rise-score {
-            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
 
         .animate-rise-tabs {
-            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
         }
 
         .animate-rise-content {
-            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+            animation: riseUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-start items-center p-2 sm:p-4 md:p-8">
 
-    <!-- Main Container with Rise Up Entrance -->
-    <div class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container relative">
+    <!-- HOME VIEW ("IGG Now" Landing Page) -->
+    <div id="homeView" class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container p-6 sm:p-8 space-y-8">
+        <!-- Logo Section -->
+        <div class="flex flex-col items-center justify-center text-center space-y-3">
+            <div class="max-w-[200px] sm:max-w-[260px]">
+                <img src="IGGNowLogo.png" alt="IGG Now Logo" class="max-w-full h-auto object-contain mx-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <!-- Premium Fallback Banner -->
+                <div class="hidden flex-col items-center justify-center p-3 rounded-2xl select-none">
+                    <span class="text-3xl font-black tracking-tighter text-gray-950">IGG Now</span>
+                </div>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-500 font-medium max-w-md">Select a match and view facts, lineups, stats and more!</p>
+        </div>
+
+        <!-- Matches Header Section -->
+        <div class="space-y-4">
+            <div class="border-b border-gray-100 pb-3">
+                <!-- Centered Header -->
+                <h3 class="font-extrabold text-gray-900 text-sm sm:text-base tracking-wide uppercase text-center">
+                    IGG matches
+                </h3>
+            </div>
+            
+            <!-- STACKED LIST FORMAT VIEW CONTAINER -->
+            <div id="homeListContainer" class="space-y-4">
+                
+                <!-- Card 1: Friendly Match -->
+                <div onclick="showMatch('completed')" class="group relative bg-gray-50/50 hover:bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-36 hover:-translate-y-2">
+                    <!-- Scoreboard Row -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
+                        <!-- Home Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
+                            </div>
+                        </div>
+                        <!-- Score box -->
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 px-4 py-1.5 rounded-xl bg-gray-50 font-black font-mono text-sm sm:text-base text-gray-900 shrink-0 shadow-3xs">
+                                2 - 3
+                            </div>
+                        </div>
+                        <!-- Away Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
+                            </div>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Info Area -->
+                    <div class="relative h-9 mt-1 border-t border-gray-100/60 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600">Friendly Match</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-400 font-bold">Thur 4 June, 14:30</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-2.5 py-0.5 bg-gray-100 text-gray-800 text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Pre-Seasonal Match -->
+                <div onclick="showMatch('preseason')" class="group relative bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-40 hover:-translate-y-2">
+                    <!-- Scoreboard Row -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
+                        <!-- Home Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
+                            </div>
+                        </div>
+                        <!-- Score box with Penalties below it -->
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 px-4 py-1.5 rounded-xl bg-gray-50 font-black font-mono text-sm sm:text-base text-gray-900 shrink-0 shadow-3xs">
+                                6 - 6
+                            </div>
+                            <span class="text-[9px] sm:text-xs text-blue-900 font-extrabold bg-blue-50 px-2 py-0.5 rounded-full mt-1 leading-none shrink-0">(0-2 pens)</span>
+                        </div>
+                        <!-- Away Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
+                            </div>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Info Area -->
+                    <div class="relative h-9 mt-1 border-t border-gray-100/60 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600">Pre-Seasonal Match</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-400 font-bold">Wed 26 April</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-2.5 py-0.5 bg-gray-100 text-gray-800 text-[10px] font-bold rounded-full uppercase tracking-wider">Full Time</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Club World Cup (Upcoming) -->
+                <div onclick="showMatch('upcoming')" class="group relative bg-gray-50/50 rounded-2xl border border-gray-100 hover:bg-white hover:border-blue-300 hover:shadow-lg transition-all duration-300 p-5 cursor-pointer flex flex-col justify-between h-36 hover:-translate-y-2">
+                    <!-- Scoreboard Row -->
+                    <div class="flex items-center justify-center gap-4 sm:gap-6 my-auto">
+                        <!-- Home Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-end flex-1 text-right">
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Clonturk FC II</span>
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-pink-100 shrink-0 border border-pink-200">
+                                <img src="Clonturk.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-pink-600">CFC</span>
+                            </div>
+                        </div>
+                        <!-- Score box -->
+                        <div class="flex flex-col items-center">
+                            <div class="border border-gray-200/80 px-4 py-1.5 rounded-xl bg-gray-50 font-black font-mono text-xs sm:text-sm text-gray-400 shrink-0 uppercase tracking-wide">
+                                TBD
+                            </div>
+                        </div>
+                        <!-- Away Team -->
+                        <div class="flex items-center gap-2 sm:gap-3 justify-start flex-1 text-left">
+                            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center overflow-hidden bg-blue-100 shrink-0 border border-blue-200">
+                                <img src="MountTemple.png" class="w-full h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                <span class="hidden text-[10px] font-black text-blue-900">MT</span>
+                            </div>
+                            <span class="font-extrabold text-xs sm:text-base text-gray-900 truncate">Mount Temple FC II</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Bottom Info Area -->
+                    <div class="relative h-9 mt-1 border-t border-gray-100/60 flex items-center">
+                        <div class="w-full flex items-center justify-between text-[11px]">
+                            <div class="flex flex-wrap items-center gap-x-2">
+                                <span class="font-bold text-blue-600">IGG Club World Cup</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="text-gray-400 font-bold">Date: TBD</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="inline-block px-2.5 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-bold rounded-full uppercase tracking-wider">Upcoming</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MATCH CONTAINER VIEW (Friendly, Preseason, and Cup Match Details) -->
+    <div id="matchDetailsView" class="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden animate-rise-container relative hidden">
         
         <!-- TOP NAVIGATION BAR -->
         <div class="px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between border-b border-gray-100 animate-rise-header relative">
-            <!-- Back Button -->
-            <button id="backToFriendlyBtn" onclick="showMatch('completed')" class="absolute left-4 sm:left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs transition duration-250 hidden">
+            <!-- Back Button to Home -->
+            <button id="backToFriendlyBtn" onclick="showMatch('home')" class="absolute left-4 sm:left-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs transition duration-200">
                 <span>←</span>
-                <span>Back to Friendly</span>
+                <span>IGG Now</span>
             </button>
 
             <!-- League Info -->
@@ -85,7 +247,7 @@
             </div>
         </div>
 
-        <!-- MATCH METADATA ROW -->
+        <!-- MATCH METADATA ROW (Reinstated per Reversion Template) -->
         <div class="px-4 sm:px-6 py-2 sm:py-2.5 bg-gray-50/50 border-b border-gray-100 flex flex-wrap justify-center gap-y-1.5 gap-x-4 sm:gap-x-6 text-[10px] sm:text-xs text-gray-400 font-semibold animate-rise-header">
             <span class="flex items-center gap-1.5">
                 <svg class="w-3.5 h-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -117,17 +279,19 @@
                     </h2>
                     <!-- Clonturk Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 order-1 md:order-2 flex items-center justify-center">
-                        <img src="Clonturk.png" alt="Clonturk FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="hidden w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full bg-pink-100 text-pink-600 items-center justify-center font-bold text-3xs sm:text-xs">CFC</div>
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-pink-50">
+                            <img src="Clonturk.png" alt="Clonturk FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                            <span class="hidden text-pink-600 font-extrabold text-xs sm:text-sm md:text-base">CFC</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Match Time Indicator -->
-                <div class="flex flex-col items-center justify-center shrink-0 min-w-[75px] sm:min-w-[110px] md:min-w-[170px]">
+                <!-- Match Score Indicator -->
+                <div class="flex flex-col items-center justify-center shrink-0 min-w-[75px] sm:min-w-[110px] md:min-w-[170px] text-center">
                     <span id="matchStatusLabel" class="text-black text-[10px] sm:text-xs font-bold mb-1 sm:mb-2 uppercase tracking-wider">
                         Full Time
                     </span>
-                    <div id="matchScoreDisplay" class="text-xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 tracking-wider font-mono">
+                    <div id="matchScoreDisplay" class="text-xl sm:text-3xl md:text-5xl font-extrabold text-gray-900 tracking-wider font-mono leading-none">
                         2 - 3
                     </div>
                     <!-- Preseason Penalties Summary Tag -->
@@ -140,8 +304,10 @@
                 <div class="flex-1 flex flex-col md:flex-row items-center justify-start text-left gap-2 sm:gap-3 md:gap-4">
                     <!-- Mount Temple Image -->
                     <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 shrink-0 flex items-center justify-center">
-                        <img src="MountTemple.png" alt="Mount Temple FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="hidden w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full bg-blue-100 text-blue-900 items-center justify-center font-bold text-3xs sm:text-xs">MTFC</div>
+                        <div class="w-10 h-10 sm:w-14 sm:h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center overflow-hidden bg-blue-50">
+                            <img src="MountTemple.png" alt="Mount Temple FC II" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                            <span class="hidden text-blue-900 font-extrabold text-xs sm:text-sm md:text-base">MT</span>
+                        </div>
                     </div>
                     <h2 class="font-extrabold text-gray-900 text-xs sm:text-lg md:text-2xl lg:text-3xl tracking-tight text-center md:text-left leading-tight">
                         Mount Temple FC II
@@ -158,7 +324,7 @@
                     <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
                 </div>
                 
-                <!-- Center Icon (Updated to use footballoutline.svg) -->
+                <!-- Center Icon (footballoutline.svg) -->
                 <div class="col-span-1 flex justify-center items-center py-1">
                     <img src="footballoutline.svg" alt="Football" class="w-4 h-4 object-contain opacity-50" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <!-- Graceful Vector Fallback if image isn't available -->
@@ -177,7 +343,7 @@
             </div>
 
             <!-- PRESEASON PENALTY SHOOTOUT DETAIL SECTION -->
-            <div id="preseasonPenaltiesSection" class="w-full mt-6 border-t border-gray-200 pt-6 hidden">
+            <div id="preseasonPenaltiesSection" class="w-full mt-6 border-t border-gray-200 pt-6 hidden animate-rise-content">
                 <div class="text-center mb-4">
                     <span class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Penalty Shootout (0 - 2)</span>
                 </div>
@@ -273,9 +439,16 @@
                         <div class="space-y-3 text-xs sm:text-sm">
                             
                             <!-- Location Row -->
-                            <div id="locationHoverRow" onclick="window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
+                            <div id="locationHoverRow" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
                                 <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
-                                    <span class="text-gray-500">Location</span>
+                                    <span class="text-gray-500 flex items-center gap-1.5">
+                                        Location
+                                        <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <span class="text-[10px] text-gray-400 font-normal">Click to learn more</span>
+                                    </span>
                                     <span id="factLocationText" class="font-medium text-gray-800 text-right text-xs sm:text-sm">DCU Soccer Centre, Whitehall, Dublin</span>
                                 </div>
                                 <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
@@ -288,7 +461,14 @@
                             <!-- Match Ball Row -->
                             <div onclick="openBallModal()" class="group relative flex justify-between items-center py-2 border-b border-gray-50 overflow-hidden cursor-pointer h-10 transition-all duration-300">
                                 <div class="w-full flex justify-between items-center transition-all duration-300 transform group-hover:-translate-y-8 group-hover:opacity-0">
-                                    <span class="text-gray-500">Match Ball</span>
+                                    <span class="text-gray-500 flex items-center gap-1.5">
+                                        Match Ball
+                                        <svg class="w-3.5 h-3.5 text-gray-400 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        <span class="text-[10px] text-gray-400 font-normal">Click to learn more</span>
+                                    </span>
                                     <span id="factBallText" class="font-medium text-gray-800 text-right pl-2 text-xs sm:text-sm">Size 5 White Sondico Meteor Football</span>
                                 </div>
                                 <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
@@ -360,11 +540,6 @@
                     <p id="knockoutDescription" class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
                         Date and Time will be decided soon. This match will be the real IGG Club World Cup.
                     </p>
-                    <div id="knockoutActionArea" class="pt-2">
-                        <button onclick="showMatch('upcoming')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm rounded-full tracking-wider uppercase shadow-sm transition-all duration-200">
-                            More Details
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -398,7 +573,7 @@
                     </div>
 
                     <div class="space-y-1">
-                        <div class="flex justify-between text-xs md:text-sm">
+                        <div class="flex justify-between text-[11px] sm:text-sm">
                             <span id="clonturkOnTargetVal" class="font-bold text-gray-800">2</span>
                             <span class="text-gray-500 font-semibold">Shots on Target</span>
                             <span id="mountTempleOnTargetVal" class="font-bold text-gray-800">5</span>
@@ -428,9 +603,9 @@
                 <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 shadow-sm flex items-center justify-around animate-rise-content">
                     
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
-                            <img src="Clonturk.png" alt="Clonturk" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-pink-100 text-pink-600 items-center justify-center font-bold text-3xs sm:text-xs">CFC</div>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 overflow-hidden">
+                            <img src="Clonturk.png" alt="Clonturk" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                            <div class="hidden text-pink-600 font-bold text-xs sm:text-sm">CFC</div>
                         </div>
                     </div>
 
@@ -456,9 +631,9 @@
                     </div>
 
                     <div class="flex flex-col items-center gap-1">
-                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center">
-                            <img src="MountTemple.png" alt="Mount Temple" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="hidden w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-blue-100 text-blue-900 items-center justify-center font-bold text-3xs sm:text-xs">MTFC</div>
+                        <div class="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-gray-100 overflow-hidden">
+                            <img src="MountTemple.png" alt="Mount Temple" class="max-w-full max-h-full object-contain" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                            <div class="hidden text-blue-900 font-bold text-xs sm:text-sm">MT</div>
                         </div>
                     </div>
 
@@ -493,7 +668,7 @@
                                 </span>
                             </div>
                             <div class="absolute inset-0 flex items-center justify-center transition-all duration-300 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 bg-blue-50/80 rounded-xl">
-                                <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5">
+                                <span class="text-blue-700 font-extrabold text-xs tracking-wider uppercase flex items-center gap-1.5 font-bold">
                                     View Match
                                 </span>
                             </div>
@@ -604,20 +779,23 @@
         function toggleColorDropdown() {
             const options = document.getElementById('colorDropdownOptions');
             const arrow = document.getElementById('colorDropdownArrow');
-            if (options.classList.contains('hidden')) {
-                options.classList.remove('hidden');
-                arrow.classList.add('rotate-180');
-            } else {
-                options.classList.add('hidden');
-                arrow.classList.remove('rotate-180');
+            if (options) {
+                if (options.classList.contains('hidden')) {
+                    options.classList.remove('hidden');
+                    if (arrow) arrow.classList.add('rotate-180');
+                } else {
+                    options.classList.add('hidden');
+                    if (arrow) arrow.classList.remove('rotate-180');
+                }
             }
         }
 
+        // Color dropdown selection logic
         function selectColor(colorName, bgClass) {
             const selectedCircle = document.getElementById('selectedColorCircle');
             const selectedName = document.getElementById('selectedColorName');
-            selectedCircle.className = "w-4 h-4 rounded-full shadow-sm transition-all duration-300 " + bgClass;
-            selectedName.innerText = colorName;
+            if (selectedCircle) selectedCircle.className = "w-4 h-4 rounded-full shadow-sm transition-all duration-300 " + bgClass;
+            if (selectedName) selectedName.innerText = colorName;
             toggleColorDropdown();
         }
 
@@ -626,10 +804,10 @@
             const modal = document.getElementById('ballModal');
             const modalContent = document.getElementById('ballModalContent');
             document.body.classList.add('overflow-hidden');
-            modal.classList.remove('opacity-0', 'pointer-events-none');
-            modal.classList.add('opacity-100');
-            modalContent.classList.remove('-translate-y-24', 'scale-95', 'opacity-0');
-            modalContent.classList.add('translate-y-0', 'scale-100', 'opacity-100');
+            if (modal) modal.classList.remove('opacity-0', 'pointer-events-none', 'opacity-100');
+            if (modal) modal.classList.add('opacity-100');
+            if (modalContent) modalContent.classList.remove('-translate-y-24', 'scale-95', 'opacity-0', 'translate-y-0', 'scale-100', 'opacity-100');
+            if (modalContent) modalContent.classList.add('translate-y-0', 'scale-100', 'opacity-100');
         }
 
         function closeBallModal() {
@@ -638,12 +816,12 @@
             const colorOptions = document.getElementById('colorDropdownOptions');
             const arrow = document.getElementById('colorDropdownArrow');
             document.body.classList.remove('overflow-hidden');
-            modal.classList.add('opacity-0', 'pointer-events-none');
-            modal.classList.remove('opacity-100');
-            modalContent.classList.add('-translate-y-24', 'scale-95', 'opacity-0');
-            modalContent.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
-            colorOptions.classList.add('hidden');
-            arrow.classList.remove('rotate-180');
+            if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+            if (modal) modal.classList.remove('opacity-100');
+            if (modalContent) modalContent.classList.add('-translate-y-24', 'scale-95', 'opacity-0');
+            if (modalContent) modalContent.classList.remove('translate-y-0', 'scale-100', 'opacity-100');
+            if (colorOptions) colorOptions.classList.add('hidden');
+            if (arrow) arrow.classList.remove('rotate-180');
         }
 
         window.onclick = function(event) {
@@ -705,6 +883,27 @@
         };
 
         function showMatch(matchType) {
+            const homeView = document.getElementById('homeView');
+            const matchDetailsView = document.getElementById('matchDetailsView');
+
+            // Quick Toggle if returning to Home
+            if (matchType === 'home') {
+                if (homeView) homeView.classList.remove('hidden');
+                if (matchDetailsView) matchDetailsView.classList.add('hidden');
+                
+                // Force restart structural DOM rise animation for Home page
+                if (homeView) {
+                    homeView.style.animation = 'none';
+                    homeView.offsetHeight; /* Trigger reflow */
+                    homeView.style.animation = '';
+                }
+                return;
+            }
+
+            // Otherwise, configure Match Details View
+            if (homeView) homeView.classList.add('hidden');
+            if (matchDetailsView) matchDetailsView.classList.remove('hidden');
+
             const leagueTitle = document.getElementById('leagueTitle');
             const metaDate = document.getElementById('metaDate');
             const metaLocation = document.getElementById('metaLocation');
@@ -765,208 +964,213 @@
             const knockoutDescription = document.getElementById('knockoutDescription');
             const knockoutAction = document.getElementById('knockoutActionArea');
 
+            // Force visibility of Back to Home button on any details page
+            if (backBtn) backBtn.classList.remove('hidden');
+
             if (matchType === 'preseason') {
-                leagueTitle.innerText = "IGG Pre-Seasonal Match";
-                metaDate.innerText = "Wednesday 26 April";
-                metaLocation.innerText = "Albert College Park Soccer Pitches";
-                matchStatusLabel.innerText = "Full Time";
-                matchScoreDisplay.innerText = "6 - 6";
-                scorersGrid.classList.remove('hidden');
-                backBtn.classList.remove('hidden');
+                if (leagueTitle) leagueTitle.innerText = "IGG Pre-Seasonal Match";
+                if (metaDate) metaDate.innerText = "Wednesday 26 April";
+                if (metaLocation) metaLocation.innerText = "Albert College Park Soccer Pitches";
+                if (matchStatusLabel) matchStatusLabel.innerText = "Full Time";
+                if (matchScoreDisplay) matchScoreDisplay.innerText = "6 - 6";
+                if (scorersGrid) scorersGrid.classList.remove('hidden');
 
-                preseasonPenaltiesTag.classList.remove('hidden');
-                preseasonPenaltiesSection.classList.remove('hidden');
+                if (preseasonPenaltiesTag) preseasonPenaltiesTag.classList.remove('hidden');
+                if (preseasonPenaltiesSection) preseasonPenaltiesSection.classList.remove('hidden');
 
-                // Suffix formatting on Left (Clonturk), Prefix flipped formatting on Right (Mount Temple)
-                clonturkScorersList.innerHTML = `
-                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">2'</span></p>
-                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">9'</span></p>
-                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">13'</span></p>
-                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">15'</span></p>
-                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">23'</span></p>
-                    <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">28'</span></p>
-                `;
-                mountTempleScorersList.innerHTML = `
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Patrick</p>
-                    <p class="text-gray-900 leading-tight">
-                        <span class="text-yellow-500 font-bold block sm:inline">Yellow Card Received</span> 
-                        <span class="text-gray-900 font-normal">Joshua 6'</span>
-                    </p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'11</span> Patrick</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'17</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'20</span> Eanna</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'25</span> Eanna</p>
-                `;
+                if (clonturkScorersList) {
+                    clonturkScorersList.innerHTML = `
+                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">2'</span></p>
+                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">9'</span></p>
+                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">13'</span></p>
+                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">15'</span></p>
+                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">23'</span></p>
+                        <p class="font-semibold text-gray-800">Dima <span class="text-gray-400 font-normal">28'</span></p>
+                    `;
+                }
+                if (mountTempleScorersList) {
+                    mountTempleScorersList.innerHTML = `
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Patrick</p>
+                        <p class="text-gray-900 leading-tight">
+                            <span class="text-yellow-500 font-bold block sm:inline">Yellow Card Received</span> 
+                            <span class="text-gray-900 font-normal">Joshua 6'</span>
+                        </p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'11</span> Patrick</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'17</span> Joshua</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'20</span> Eanna</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'25</span> Eanna</p>
+                    `;
+                }
 
-                // Adjust Facts Tab info
-                factLocationText.innerText = "Albert College Park Soccer Pitches, Whitehall, Dublin";
-                factBallText.innerText = "Size 5 White Sondico Crossfire Football";
-                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/CuxEL2tzkKHB7mnL8', '_blank')");
-                surfaceText.innerText = "Grass";
-                weatherDisplay.innerText = "Sunny, 20°C";
+                if (factLocationText) factLocationText.innerText = "Albert College Park Soccer Pitches, Whitehall, Dublin";
+                if (factBallText) factBallText.innerText = "Size 5 White Sondico Crossfire Football";
+                if (locationHoverRow) locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/CuxEL2tzkKHB7mnL8', '_blank')");
+                if (surfaceText) surfaceText.innerText = "Grass";
+                if (weatherDisplay) weatherDisplay.innerText = "Sunny, 20°C";
 
-                // Modal Ball Swaps
-                modalBallTitle.innerText = "Sondico Crossfire";
-                modalBallModel.innerText = "Crossfire";
-                ballConditionDisplay.innerText = "Alright (Slight Wear)";
-                modalBallImage.setAttribute("src", "SondicoCrxssfireSize5.webp");
-                colorOptionsDropdown.innerHTML = colorways.crossfire;
+                if (modalBallTitle) modalBallTitle.innerText = "Sondico Crossfire";
+                if (modalBallModel) modalBallModel.innerText = "Crossfire";
+                if (ballConditionDisplay) ballConditionDisplay.innerText = "Alright (Slight Wear)";
+                if (modalBallImage) modalBallImage.setAttribute("src", "SondicoCrxssfireSize5.webp");
+                if (colorOptionsDropdown) colorOptionsDropdown.innerHTML = colorways.crossfire;
                 
-                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
-                selectedName.innerText = "White";
+                if (selectedCircle) selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                if (selectedName) selectedName.innerText = "White";
 
-                // Probability even settings
-                clonturkProbBar.style.width = '45%';
-                drawProbBar.style.width = '10%';
-                mountTempleProbBar.style.width = '45%';
-                clonturkProbText.innerText = "Clonturk: 45%";
-                drawProbText.innerText = "Draw: 10%";
-                mountTempleProbText.innerText = "Mount Temple: 45%";
+                if (clonturkProbBar) clonturkProbBar.style.width = '45%';
+                if (drawProbBar) drawProbBar.style.width = '10%';
+                if (mountTempleProbBar) mountTempleProbBar.style.width = '45%';
+                if (clonturkProbText) clonturkProbText.innerText = "Clonturk: 45%";
+                if (drawProbText) drawProbText.innerText = "Draw: 10%";
+                if (mountTempleProbText) mountTempleProbText.innerText = "Mount Temple: 45%";
 
-                statsMain.classList.remove('hidden');
-                statsUnavailable.classList.add('hidden');
+                if (statsMain) statsMain.classList.remove('hidden');
+                if (statsUnavailable) statsUnavailable.classList.add('hidden');
 
-                clonturkPossessionVal.innerText = "48%";
-                mountTemplePossessionVal.innerText = "52%";
-                clonturkPossessionBar.style.width = '48%';
-                mountTemplePossessionBar.style.width = '52%';
+                if (clonturkPossessionVal) clonturkPossessionVal.innerText = "48%";
+                if (mountTemplePossessionVal) mountTemplePossessionVal.innerText = "52%";
+                if (clonturkPossessionBar) clonturkPossessionBar.style.width = '48%';
+                if (mountTemplePossessionBar) mountTemplePossessionBar.style.width = '52%';
 
-                clonturkShotsVal.innerText = "14";
-                mountTempleShotsVal.innerText = "12";
-                clonturkShotsBar.style.width = '54%';
-                mountTempleShotsBar.style.width = '46%';
+                if (clonturkShotsVal) clonturkShotsVal.innerText = "14";
+                if (mountTempleShotsVal) mountTempleShotsVal.innerText = "12";
+                if (clonturkShotsBar) clonturkShotsBar.style.width = '54%';
+                if (mountTempleShotsBar) mountTempleShotsBar.style.width = '46%';
 
-                clonturkOnTargetVal.innerText = "8";
-                mountTempleOnTargetVal.innerText = "9";
-                clonturkOnTargetBar.style.width = '47%';
-                mountTempleOnTargetBar.style.width = '53%';
+                if (clonturkOnTargetVal) clonturkOnTargetVal.innerText = "8";
+                if (mountTempleOnTargetVal) mountTempleOnTargetVal.innerText = "9";
+                if (clonturkOnTargetBar) clonturkOnTargetBar.style.width = '47%';
+                if (mountTempleOnTargetBar) mountTempleOnTargetBar.style.width = '53%';
 
-                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
-                knockoutBadge.innerText = "Upcoming Match";
-                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
-                knockoutAction.classList.remove('hidden');
+                if (knockoutMatchTitle) knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                if (knockoutBadge) knockoutBadge.innerText = "Upcoming Match";
+                if (knockoutDescription) knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                if (knockoutAction) knockoutAction.classList.add('hidden');
 
-                lineupImage.setAttribute("src", "LineupOG.png");
+                if (lineupImage) lineupImage.setAttribute("src", "LineupOG.png");
                 if (lineupsText) {
                     lineupsText.innerText = "Lineups will be posted soon.";
                 }
 
             } else if (matchType === 'upcoming') {
-                leagueTitle.innerText = "IGG Club World Cup";
-                metaDate.innerText = "Date and time: TBD";
-                metaLocation.innerText = "DCU Soccer Centre";
-                matchStatusLabel.innerText = "Upcoming";
-                matchScoreDisplay.innerText = "TBD";
-                scorersGrid.classList.add('hidden');
-                backBtn.classList.remove('hidden');
+                if (leagueTitle) leagueTitle.innerText = "IGG Club World Cup";
+                if (metaDate) metaDate.innerText = "Date and time: TBD";
+                if (metaLocation) metaLocation.innerText = "DCU Soccer Centre";
+                if (matchStatusLabel) matchStatusLabel.innerText = "Upcoming";
+                if (matchScoreDisplay) matchScoreDisplay.innerText = "TBD";
+                if (scorersGrid) scorersGrid.classList.add('hidden');
 
-                preseasonPenaltiesTag.classList.add('hidden');
-                preseasonPenaltiesSection.classList.add('hidden');
+                if (preseasonPenaltiesTag) preseasonPenaltiesTag.classList.add('hidden');
+                if (preseasonPenaltiesSection) preseasonPenaltiesSection.classList.add('hidden');
 
-                factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
-                factBallText.innerText = "Size 5 White Sondico Meteor Football";
-                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
-                surfaceText.innerText = "Astro";
-                weatherDisplay.innerText = "No Data";
+                if (factLocationText) factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
+                if (factBallText) factBallText.innerText = "Size 5 White Sondico Meteor Football";
+                if (locationHoverRow) locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
+                if (surfaceText) surfaceText.innerText = "Astro";
+                if (weatherDisplay) weatherDisplay.innerText = "No Data";
 
-                modalBallTitle.innerText = "Sondico Meteor";
-                modalBallModel.innerText = "Meteor";
-                ballConditionDisplay.innerText = "Basically Brand New";
-                modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
-                colorOptionsDropdown.innerHTML = colorways.meteor;
+                if (modalBallTitle) modalBallTitle.innerText = "Sondico Meteor";
+                if (modalBallModel) modalBallModel.innerText = "Meteor";
+                if (ballConditionDisplay) ballConditionDisplay.innerText = "Basically Brand New";
+                if (modalBallImage) modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
+                if (colorOptionsDropdown) colorOptionsDropdown.innerHTML = colorways.meteor;
 
-                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
-                selectedName.innerText = "White";
+                if (selectedCircle) selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                if (selectedName) selectedName.innerText = "White";
 
-                clonturkProbBar.style.width = '35%';
-                drawProbBar.style.width = '10%';
-                mountTempleProbBar.style.width = '55%';
-                clonturkProbText.innerText = "Clonturk: 35%";
-                drawProbText.innerText = "Draw: 10%";
-                mountTempleProbText.innerText = "Mount Temple: 55%";
+                if (clonturkProbBar) clonturkProbBar.style.width = '35%';
+                if (drawProbBar) drawProbBar.style.width = '10%';
+                if (mountTempleProbBar) mountTempleProbBar.style.width = '55%';
+                if (clonturkProbText) clonturkProbText.innerText = "Clonturk: 35%";
+                if (drawProbText) drawProbText.innerText = "Draw: 10%";
+                if (mountTempleProbText) mountTempleProbText.innerText = "Mount Temple: 55%";
 
-                statsMain.classList.add('hidden');
-                statsUnavailable.classList.remove('hidden');
+                if (statsMain) statsMain.classList.add('hidden');
+                if (statsUnavailable) statsUnavailable.classList.remove('hidden');
 
-                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
-                knockoutBadge.innerText = "Upcoming Match";
-                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
-                knockoutAction.classList.add('hidden');
+                if (knockoutMatchTitle) knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                if (knockoutBadge) knockoutBadge.innerText = "Upcoming Match";
+                if (knockoutDescription) knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                if (knockoutAction) knockoutAction.classList.add('hidden');
 
-                lineupImage.setAttribute("src", "Lineup.png");
+                if (lineupImage) lineupImage.setAttribute("src", "Lineup.png");
                 if (lineupsText) {
                     lineupsText.innerText = "Lineups will be posted after the game.";
                 }
 
             } else {
-                leagueTitle.innerText = "IGG Friendlies";
-                metaDate.innerText = "Thur 4 June, 14:30";
-                metaLocation.innerText = "DCU Soccer Centre";
-                matchStatusLabel.innerText = "Full Time";
-                matchScoreDisplay.innerText = "2 - 3";
-                scorersGrid.classList.remove('hidden');
-                backBtn.classList.add('hidden');
+                // Completed Friendly Match
+                if (leagueTitle) leagueTitle.innerText = "IGG Friendlies";
+                if (metaDate) metaDate.innerText = "Thur 4 June, 14:30";
+                if (metaLocation) metaLocation.innerText = "DCU Soccer Centre";
+                if (matchStatusLabel) matchStatusLabel.innerText = "Full Time";
+                if (matchScoreDisplay) matchScoreDisplay.innerText = "2 - 3";
+                if (scorersGrid) scorersGrid.classList.remove('hidden');
 
-                preseasonPenaltiesTag.classList.add('hidden');
-                preseasonPenaltiesSection.classList.add('hidden');
+                if (preseasonPenaltiesTag) preseasonPenaltiesTag.classList.add('hidden');
+                if (preseasonPenaltiesSection) preseasonPenaltiesSection.classList.add('hidden');
 
-                clonturkScorersList.innerHTML = `
-                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
-                    <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
-                `;
-                mountTempleScorersList.innerHTML = `
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
-                    <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
-                `;
+                if (clonturkScorersList) {
+                    clonturkScorersList.innerHTML = `
+                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">3'</span></p>
+                        <p class="font-semibold text-gray-800">Liam <span class="text-gray-400 font-normal">5'</span></p>
+                    `;
+                }
+                if (mountTempleScorersList) {
+                    mountTempleScorersList.innerHTML = `
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'2</span> Joshua</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'4</span> Joshua</p>
+                        <p class="font-semibold text-gray-800"><span class="text-gray-400 font-normal">'7</span> Joshua</p>
+                    `;
+                }
 
-                factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
-                factBallText.innerText = "Size 5 White Sondico Meteor Football";
-                locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
-                surfaceText.innerText = "Astro";
-                weatherDisplay.innerText = "Rainy, 14°C";
+                if (factLocationText) factLocationText.innerText = "DCU Soccer Centre, Whitehall, Dublin";
+                if (factBallText) factBallText.innerText = "Size 5 White Sondico Meteor Football";
+                if (locationHoverRow) locationHoverRow.setAttribute("onclick", "window.open('https://maps.app.goo.gl/cqTvdnq8Kz5xuntD7', '_blank')");
+                if (surfaceText) surfaceText.innerText = "Astro";
+                if (weatherDisplay) weatherDisplay.innerText = "Rainy, 14°C";
 
-                modalBallTitle.innerText = "Sondico Meteor";
-                modalBallModel.innerText = "Meteor";
-                ballConditionDisplay.innerText = "Brand New";
-                modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
-                colorOptionsDropdown.innerHTML = colorways.meteor;
+                if (modalBallTitle) modalBallTitle.innerText = "Sondico Meteor";
+                if (modalBallModel) modalBallModel.innerText = "Meteor";
+                if (ballConditionDisplay) ballConditionDisplay.innerText = "Brand New";
+                if (modalBallImage) modalBallImage.setAttribute("src", "SondicoMeteorSize5.AVIF");
+                if (colorOptionsDropdown) colorOptionsDropdown.innerHTML = colorways.meteor;
 
-                selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
-                selectedName.innerText = "White";
+                if (selectedCircle) selectedCircle.className = "w-4 h-4 rounded-full bg-white border border-gray-300 shadow-sm transition-all duration-300";
+                if (selectedName) selectedName.innerText = "White";
 
-                clonturkProbBar.style.width = '45%';
-                drawProbBar.style.width = '10%';
-                mountTempleProbBar.style.width = '45%';
-                clonturkProbText.innerText = "Clonturk: 45%";
-                drawProbText.innerText = "Draw: 10%";
-                mountTempleProbText.innerText = "Mount Temple: 45%";
+                if (clonturkProbBar) clonturkProbBar.style.width = '45%';
+                if (drawProbBar) drawProbBar.style.width = '10%';
+                if (mountTempleProbBar) mountTempleProbBar.style.width = '45%';
+                if (clonturkProbText) clonturkProbText.innerText = "Clonturk: 45%";
+                if (drawProbText) drawProbText.innerText = "Draw: 10%";
+                if (mountTempleProbText) mountTempleProbText.innerText = "Mount Temple: 45%";
 
-                statsMain.classList.remove('hidden');
-                statsUnavailable.classList.add('hidden');
+                if (statsMain) statsMain.classList.remove('hidden');
+                if (statsUnavailable) statsUnavailable.classList.add('hidden');
 
-                clonturkPossessionVal.innerText = "30%";
-                mountTemplePossessionVal.innerText = "70%";
-                clonturkPossessionBar.style.width = '30%';
-                mountTemplePossessionBar.style.width = '70%';
+                if (clonturkPossessionVal) clonturkPossessionVal.innerText = "30%";
+                if (mountTemplePossessionVal) mountTemplePossessionVal.innerText = "70%";
+                if (clonturkPossessionBar) clonturkPossessionBar.style.width = '30%';
+                if (mountTemplePossessionBar) mountTemplePossessionBar.style.width = '70%';
 
-                clonturkShotsVal.innerText = "4";
-                mountTempleShotsVal.innerText = "6";
-                clonturkShotsBar.style.width = '40%';
-                mountTempleShotsBar.style.width = '60%';
+                if (clonturkShotsVal) clonturkShotsVal.innerText = "4";
+                if (mountTempleShotsVal) mountTempleShotsVal.innerText = "6";
+                if (clonturkShotsBar) clonturkShotsBar.style.width = '40%';
+                if (mountTempleShotsBar) mountTempleShotsBar.style.width = '60%';
 
-                clonturkOnTargetVal.innerText = "2";
-                mountTempleOnTargetVal.innerText = "5";
-                clonturkOnTargetBar.style.width = '28%';
-                mountTempleOnTargetBar.style.width = '72%';
+                if (clonturkOnTargetVal) clonturkOnTargetVal.innerText = "2";
+                if (mountTempleOnTargetVal) mountTempleOnTargetVal.innerText = "5";
+                if (clonturkOnTargetBar) clonturkOnTargetBar.style.width = '28%';
+                if (mountTempleOnTargetBar) mountTempleOnTargetBar.style.width = '72%';
 
-                knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
-                knockoutBadge.innerText = "Upcoming Match";
-                knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
-                knockoutAction.classList.remove('hidden');
+                if (knockoutMatchTitle) knockoutMatchTitle.innerText = "Clonturk vs Mount Temple";
+                if (knockoutBadge) knockoutBadge.innerText = "Upcoming Match";
+                if (knockoutDescription) knockoutDescription.innerText = "Date and Time will be decided soon. This match will be the real IGG Club World Cup.";
+                if (knockoutAction) knockoutAction.classList.remove('hidden');
 
-                lineupImage.setAttribute("src", "Lineup.png");
+                if (lineupImage) lineupImage.setAttribute("src", "Lineup.png");
                 if (lineupsText) {
                     lineupsText.innerText = "Lineups will be posted soon.";
                 }
@@ -975,7 +1179,7 @@
             switchTab('facts');
 
             // Force restart structural DOM rise animation
-            const container = document.querySelector('.animate-rise-container');
+            const container = document.getElementById('matchDetailsView');
             if (container) {
                 container.style.animation = 'none';
                 container.offsetHeight;

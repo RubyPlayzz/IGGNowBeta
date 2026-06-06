@@ -5,7 +5,16 @@
 </div>
 
 # What is it?
-It's a website created by RubyPlayzz and also helped by nisiosh to track all of the football matches that took place in IGG, inspired by SofaScore and FotMob to bring all of the information you need from the IGG matches.
+IGG Now is a website created by @RubyPlayzz, with support from @nisiosh, designed to track all football matches in IGG. Inspired by platforms like SofaScore and FotMob, it shows data and insights you need from every single match.
 
 # Features of IGG Now
-The main features of IGG Now are the analysis of the matches in IGG. IGG Now brings you all the information you need from each match, it gives you information like the place and time of the match, what the weather condition at the time was and even goes in depth about the match ball like the model, company, the condition of the match ball and the size. After the match the website is updated to show you the scorers of the match and the lineups show you more detail about the match aswell such as the rating of the players based on how well they played, man of the match (indicated by a star next to their rating) and also shows how much goals, assists and yellow or blue cards each player recieved. In the stats tab you can also see a brief overview of the possesion, shots taken and the shots on target and finally in the head to head section it shows when the 2 teams met and how much times each club won.
+The features of IGG Now revolves around deep match analysis, bringing you information from each game.
+
+## Match Conditions
+IGG Now provides important context before the match, including the place of the game, kickoff time, and weather conditions. It even goes in-depth regarding the match ball like the specific model, company, size, and condition. 
+
+## After-Match Statistics
+Once the match is over, the website is updated to show the goal scorers and lineups for the game. This includes individual player ratings based on performance, the man of the match (indicated by a star next to their rating), and a breakdown of goals, assists, and yellow or blue cards received by each player. 
+
+
+Additionally, the stats tab offers a brief overview of possession, shots taken, and shots on target, while the head-to-head section shows past matches between the two clubs and their win records against each other.
